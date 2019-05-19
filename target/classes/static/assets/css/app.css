@@ -90,7 +90,33 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"Î¢ï¿
   content: " ";
   display: table;
 }
-
+.tpl-user-panel-profile-picture {
+  border-radius: 50%;
+  width: 82px;
+  height: 82px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.tpl-user-panel-profile-picture img {
+  width: auto;
+  height: 82px;
+  vertical-align: middle;
+}
+.user-panel-logged-in-text {
+  display: block;
+  color: #cfcfcf;
+  font-size: 14px;
+}
+.tpl-user-panel-status-icon {
+  margin-right: 2px;
+}
+.tpl-user-panel-action-link {
+  color: #6d787c;
+  font-size: 12px;
+}
+.tpl-user-panel-action-link:hover {
+  color: #a2aaad;
+}
 .tpl-form-border-form .am-form-label {
   padding-top: 5px;
   font-size: 16px;

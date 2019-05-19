@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -52,7 +52,20 @@
    
         
         <!-- 侧边导航栏  -->
-        <div class="left-sidebar">     
+        <div class="left-sidebar">  
+         <!-- 用户信息 -->
+         	<div class="tpl-sidebar-user-panel">
+                <div class="tpl-user-panel-slide-toggleable">
+                    <div class="tpl-user-panel-profile-picture">
+                        <img src="assets/img/user02.png" alt="">
+                    </div>
+                    <span class="user-panel-logged-in-text">
+              		<i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon" th:text="${name}"></i>
+          			   
+          			</span>
+                    <a href="javascript:;" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 账号设置</a>
+                </div>
+            </div>   
         <!-- 菜单  -->
             <ul class="sidebar-nav">
                
@@ -94,7 +107,7 @@
 				    </div>
 	        		
 	        		<div id="control" >
-				
+							
 						<input type="button" value="获取绘制的覆盖物个数" onclick="alert(overlays.length)"/>
 	                    <input type="button" value="清除所有覆盖物" onclick="clearAll()"/>
 	                    <input type="button" value="获取最后一个覆盖物信息" id="getLastOverLay"/>
@@ -137,6 +150,8 @@
     <script src="assets/js/app.js"></script>
     <script type="text/javascript">
 	// 百度地图API功能
+	
+	   
 	    var map = new BMap.Map('map',{enableMapClick: false});
 	    var poi = new BMap.Point(116.307852,40.057031);
 	    map.centerAndZoom(poi, 16);
@@ -157,7 +172,7 @@
 	    
 	    function getBoundary(){       
 		var bdary = new BMap.Boundary();
-		bdary.get("邵阳市隆回县六都寨镇", function(rs){       //获取行政区域
+		bdary.get("邵阳市隆回县", function(rs){       //获取行政区域
 			map.clearOverlays();        //清除地图覆盖物       
 			var count = rs.boundaries.length; //行政区域的点有多少个
 			if (count === 0) {

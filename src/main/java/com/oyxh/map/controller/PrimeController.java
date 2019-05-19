@@ -8,6 +8,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +28,9 @@ import com.oyxh.map.service.UserService;
 
 
 @Controller
-public class PrimeController {
+public class PrimeController extends BaseController {
 	private String prefix = "study";
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	 @Autowired
 	  private UserService userService;
 	 
@@ -44,12 +47,7 @@ public class PrimeController {
    	 return  "login";
 	}
 	
-	@RequestMapping("/queryuser")
-	@ResponseBody
-	    public List<UserDO> queryAllUsers(){
-		System.out.println("querryuser");
-	        return userService.list();
-	 }
+
 	
 	@Log("登录")
 	@PostMapping("/login")
@@ -72,11 +70,12 @@ public class PrimeController {
 	
 	@Log("请求访问主页")
 	@GetMapping({"/index"})
-	public String  getIndex() {
+	public String  getIndex(Model model) {
 		// 查询列表数据
 		
-       
-   	 return  "index";
+		model.addAttribute("name", getUser().getName());
+		logger.info(getUser().getName());
+		return  "index";
 	}
 	/*
 	@GetMapping("/index1" )
