@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的导航栏</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+   
+    <link rel="stylesheet" href="assets/css/amazeui.min.css" />
+  
+    <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/jquery.min.js"></script> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EPgo3ahLed1MOQlZDPg1fdl0DN7Pg07w"></script>
+    <!--加载鼠标绘制工具-->
+	<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+</head>
+
+<body data-type="index">
+
+  <script src="assets/js/theme_moban.js"></script>
+    <div class="am-g tpl-g" id="allpagecontent">
+          <!--头部  -->
+        <header>
+               <!--logo -->
+            <div class="am-fl tpl-header-logo">
+                <a href="javascript:;"><img src="assets/img/logo.png" alt=""></a>
+            </div>
+            <!--右侧内容 -->
+            <div class="tpl-header-fluid">
+                <!-- 侧边切换 -->
+                <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
+
+                </span>
+                </div>
+               
+              </div>
+
+        </header>
+   
+        
+        <!-- 侧边导航栏  -->
+        <div class="left-sidebar">     
+        <!-- 菜单  -->
+            <ul class="sidebar-nav">
+               
+                <li class="sidebar-nav-link">
+                    <a href="#" class="active">
+                        <i class="am-icon-home sidebar-nav-link-logo"></i> 图层管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="#">
+                        <i class="am-icon-table sidebar-nav-link-logo"></i> 统计分析
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="#">
+                        <i class="am-icon-calendar sidebar-nav-link-logo"></i> 导入数据
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="#">                       
+                     <i class="am-icon-wpforms sidebar-nav-link-logo"></i> 表单  </a>
+                </li>
+            </ul>
+        </div>
+        <!-- 内容区域  -->
+        <div class="tpl-content-wrapper" id = "mapcontent">
+	         <!--  中间栏  -->
+	  	<div class="mid-sidebar"> 
+	        	<ul>    
+	              	   <li class="sidebar-nav-link">
+	                    <a href="#">
+	                        <i class="am-icon-clone sidebar-nav-link-logo"></i> 注册
+	                        <span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm">6</span>
+	                    </a>
+	                </li>
+	
+	            </ul>
+	        </div>
+	        
+	        
+	        
+	        <div class="tpl-content-wrapper-main" id="mapcavans" >
+	        	
+	        	<div id="map1_container" >
+	        		<div id="allmap1" > 
+	        		<div id="map" style="height:500px;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
+	        		</div>
+	        		
+	        		<div id="control">
+				
+					<input type="button" value="获取绘制的覆盖物个数" onclick="alert(overlays.length)"/>
+       				<input type="button" value="清除所有覆盖物" onclick="clearAll()"/>
+					
+			    	</div>
+	        	</div>
+	        	
+             </div>  
+             
+             
+        </div>
+        
+    </div>
+    <script src="assets/js/amazeui.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script type="text/javascript">
+
+	
+	 var map = new BMap.Map('map');
+    var poi = new BMap.Point(116.307852,40.057031);
+    map.centerAndZoom(poi, 16);//设置中心点坐标和地图级别
+    map.enableScrollWheelZoom();
+ 	var overlays = [];
+    var overlaycomplete = function(e){
+        overlays.push(e.overlay);
+        var path = e.overlay.getPath();//Array<Point> 返回多边型的点数组
+        for(var i=0;i<path.length;i++){
+            console.log("lng:"+path[i].lng+"\n lat:"+path[i].lat);
+        }
+    };
+    var styleOptions = {
+        strokeColor:"red",    //边线颜色。
+        fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+        strokeWeight: 3,       //边线的宽度，以像素为单位。
+        strokeOpacity: 0.8,       //边线透明度，取值范围0 - 1。
+        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+        strokeStyle: 'solid' //边线的样式，solid或dashed。
+    }
+    //实例化鼠标绘制工具
+    var drawingManager = new BMapLib.DrawingManager(map, {
+        isOpen: false, //是否开启绘制模式
+        enableDrawingTool: true, //是否显示工具栏
+        drawingMode:BMAP_DRAWING_POLYGON,//绘制模式  多边形
+        drawingToolOptions: {
+            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+            offset: new BMap.Size(5, 5), //偏离值
+            drawingModes:[
+                BMAP_DRAWING_POLYGON
+            ]
+        },
+        polygonOptions: styleOptions //多边形的样式
+    });
+    
+     //添加鼠标绘制工具监听事件，用于获取绘制结果
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+    function clearAll() {
+        for(var i = 0; i < overlays.length; i++){
+            map.removeOverlay(overlays[i]);
+        }
+        overlays.length = 0   
+    }
+
+
+    </script>
+
+    
+</body>
+
+</html>
