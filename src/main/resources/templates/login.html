@@ -14,7 +14,8 @@
           <div>
               
             <form-group  v-for="item in sites" v-bind:message="item.text" v-bind:placeholder=item.placeholder
-            v-bind:type=item.type v-bind:id=item.id v-bind:name=item.name v-bind:styleobject="item.styleobject"></form-group>
+            v-bind:type=item.type v-bind:id=item.id v-bind:name=item.name v-bind:styleobject="item.styleobject" 
+            @change="update"></form-group>
           
           <oy-check-box v-bind:checked="isSelect.checked" v-bind:id="isSelect.id" v-bind:labeltext="isSelect.labeltext"
           v-bind:styleobject="isSelect.styleobject" ></oy-check-box>
@@ -27,11 +28,27 @@
 <script>
 
 	var formGroup = {
-		props: ['message','placeholder','type','name','id','styleobject'],
+        props: ['message','placeholder','type','name','id','styleobject'],
+        data () {
+        return {
+            textValue: this.message
+            }
+        },
 		template: `
            <div v-bind:class="styleobject"> <input type="text" name="name"   
-            v-bind:id="id" v-bind:placeholder="placeholder" value="admin" ></div>
-		  `
+            v-bind:id="id" v-bind:placeholder="placeholder" v-model="textValue" ></div>
+          `,
+       
+        watch:{
+            textValue:{
+                 handler(newName, oldName) {
+                   
+                     this.$emit('change',newName,this.id);
+                }
+            }
+                
+        }
+
 	}
     var oyCheckBox = {
 		props: ['checked','labeltext','id','styleobject'],   //选择值,labelText选择框后面的名字
@@ -76,8 +93,17 @@
              }
           },
         methods:{
-        handleLogin(flag){//触发子组件城市选择-选择城市的事件
+        handleLogin(flag){//触发子组件点击
             alert(flag);
+        },
+        update(newName,id){//触发子组件内容变化
+           
+            for(var i=0;i<this.sites.length;i++){
+                if(this.sites[i].id == id){
+                    this.sites[i].text =  newName;
+                }
+            }
+            //this.sites.text=newName;
         }
       }
 
