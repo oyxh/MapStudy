@@ -9,34 +9,79 @@
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
-    <div id="app">
-    <ul>
-  		<form-component v-for="item in sites" v-bind:message="item.text" v-bind:placeholder=item.placeholder></form-component>
-  	</ul>	
+    <div id="app" class="am-form tpl-form-line-form">
+ 
+          <div>
+              
+            <form-group  v-for="item in sites" v-bind:message="item.text" v-bind:placeholder=item.placeholder
+            v-bind:type=item.type v-bind:id=item.id v-bind:name=item.name v-bind:styleobject="item.styleobject"></form-group>
+          
+          <oy-check-box v-bind:checked="isSelect.checked" v-bind:id="isSelect.id" v-bind:labeltext="isSelect.labeltext"
+          v-bind:styleobject="isSelect.styleobject" ></oy-check-box>
+          <oy-button   v-bind:labeltext="submitbutton.labeltext" v-bind:type="submitbutton.type"
+          v-bind:styleobject="submitbutton.styleobject" v-bind:stylebutton="submitbutton.stylebutton"
+          @login="handleLogin"></oy-button>
+          </div>
     </div>
  
 <script>
 
 	var formGroup = {
-		props: ['message','placeholder'],
+		props: ['message','placeholder','type','name','id','styleobject'],
 		template: `
-		   <li> <input type="text" name="username" class="tpl-form-input"  id="username" v-bind:placeholder="placeholder" v-model="message" ></li>
+           <div v-bind:class="styleobject"> <input type="text" name="name"   
+            v-bind:id="id" v-bind:placeholder="placeholder" value="admin" ></div>
 		  `
 	}
+    var oyCheckBox = {
+		props: ['checked','labeltext','id','styleobject'],   //选择值,labelText选择框后面的名字
+		template: `
+		   <div v-bind:class="styleobject"><input type="checkbox"  v-bind:labelText="labeltext" v-model="checked" >
+           <label for="checkbox">{{ labeltext }}</label></div>
+		  `
+    }
+    var oyButton = {
+		props: ['type','labeltext','styleobject','stylebutton'],   //选择值,labelText选择框后面的名字
+		template: `
+		   <div v-bind:class="styleobject">
+                <button v-bind:type="type" @click="clickButton" v-bind:class="stylebutton">{{ labeltext }}</button>
+            </div>
+          `,
+         methods:{
+            clickButton(){
+                var flag = true;
+                alert("I am from oyButton");
+                this.$emit('login',flag)
+            }
+         }
+    }
 
-  
+ 
+
+
     new Vue({
         el: '#app',
         components: {
-            'form-component': formGroup
+            'form-group':formGroup,
+            'oy-check-box':oyCheckBox,
+            'oy-button':oyButton
         },
        data:{
       		sites: [
-		      { text: 'Runoob', placeholder:'user'},
-		      { text: 'Google',placeholder:'password' },
-		      { text: 'Taobao',placeholder:'册数' }
-		      ]
-  		}
+		      { text: 'admin', placeholder:'user',type:'text',name:'username',id:'username',styleobject:"am-form-group"},
+		      { text: 'admin',placeholder:'password',type:'text',name:'password',id:'password',styleobject:"am-form-group" },
+              ],
+            isSelect:{checked:false,labeltext:"记住密码",id:'checkbox_denglu',styleobject:"am-form-group tpl-login-remember-me"},
+            submitbutton:{labeltext:"登录",styleobject:"am-form-group",type:'submit',stylebutton:"am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn"
+             }
+          },
+        methods:{
+        handleLogin(flag){//触发子组件城市选择-选择城市的事件
+            alert(flag);
+        }
+      }
+
+
     })
 </script>
 
