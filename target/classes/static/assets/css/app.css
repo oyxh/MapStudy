@@ -450,56 +450,56 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"Î¢ï¿
 }
 
 
-.theme-white .sidebar-nav-link a {
+.sidebar-nav-link a {
   border-left: #fff 0px solid;
 }
-.theme-white .sidebar-nav-link a:hover {
+.sidebar-nav-link a:hover {
   background: #f2f6f9;
   color: #868E8E;
   border-left: #3bb4f2 0px solid;
 }
-.theme-white .sidebar-nav-link a.active {
+.sidebar-nav-link a.active {
   background: #f2f6f9;
   color: #868E8E;
   border-left: #3bb4f2 0px solid;
 }
-.theme-white .sidebar-nav-heading {
+.sidebar-nav-heading {
   color: #999;
   border-bottom: 1px solid #eee;
 }
-.theme-white .tpl-sidebar-user-panel {
+.tpl-sidebar-user-panel {
   background: #fff;
   border-bottom: 1px solid #eee;
 }
 
 
-.theme-white .tpl-header-fluid {
+.tpl-header-fluid {
   background: #fff;
   border-top: 1px solid #eee;
 }
-.theme-white .tpl-header-logo {
+.tpl-header-logo {
   background: #fff;
   border-bottom: 1px solid #eee;
 }
-.theme-white .tpl-header-switch-button {
+.tpl-header-switch-button {
   background: #fff;
   border-right: 1px solid #eee;
   border-left: 1px solid #eee;
 }
-.theme-white .tpl-header-switch-button:hover {
+.tpl-header-switch-button:hover {
   background: #fff;
   color: #999;
 }
-.theme-white .tpl-header-navbar a {
+.tpl-header-navbar a {
   color: #999;
 }
-.theme-white .tpl-header-navbar a:hover {
+.tpl-header-navbar a:hover {
   color: #999;
 }
-.theme-white .left-sidebar {
+.left-sidebar {
   background: #fff;
 }
-.theme-white .mid-sidebar {
+.mid-sidebar {
   background: #fff;
 }
 
@@ -535,7 +535,7 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"Î¢ï¿
     border-top: none;
     margin-left: 0;
   }
-  .theme-white .tpl-header-fluid {
+  .tpl-header-fluid {
     border-top: none;
   }
   .theme-black .tpl-sidebar-user-panel {
@@ -549,7 +549,7 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"Î¢ï¿
   }
 }
 @media screen and (max-width: 641px) {
-  .theme-white .tpl-error-title,
+  .tpl-error-title,
   .theme-black .tpl-error-title {
     font-size: 130px;
     line-height: 140px;

@@ -5,47 +5,154 @@
 <title>vue学习</title>
 <script src="assets/js/vue.js"></script>
 <script src="assets/js/axios.min.js"></script>
-<script src="assets/js/plugins/myvieweditor/my-vue-editor.js"></script>
+<link rel="stylesheet" href="assets/css/amazeui.min.css" />
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/js/plugins/layui/css/layui.css">
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EPgo3ahLed1MOQlZDPg1fdl0DN7Pg07w"></script>
+<!--加载鼠标绘制工具-->
+<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
 </head>
-<body>
-  
-		<div id="components-demo">
-		    
-  			<blog-post v-bind:title="post.title"></blog-post>
-  			<blog-post
-				  v-bind:title="post.title + ' by ' + post.author.name"
-				></blog-post>
-  			
-		</div>
-		
-			
-			
+<body data-type="index">
 
 
+    <div class="am-g tpl-g" id="allpagecontent">
+            <!--头部  -->
+        <header>
+               <!--logo -->
+            <div class="am-fl tpl-header-logo">
+                <a href="javascript:;"><img src="assets/img/logo.png" alt=""></a>
+            </div>
+            <!--右侧内容 -->
+            <div class="tpl-header-fluid">
+              <!-- 侧边切换 -->
+                <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
 
-<script>
+                </span>
+                </div>
+               
+              </div>
 
-Vue.component('blog-post', {
-  // 在 JavaScript 中是 camelCase 的
-  props: {
-  title: String,
-  likes: Number,
-  isPublished: Boolean,
-  commentIds: Array,
-  author: Object,
-  callback: Function,
-  contactsPromise: Promise // or any other constructor
-},
-  template: '<h3>{{ title }}</h3>'
-});
+        </header>
+   
+        
+          <!-- 侧边导航栏  -->
+        <div class="left-sidebar">  
+       <!-- 用户信息 -->
+         	<div class="tpl-sidebar-user-panel">
+                <div class="tpl-user-panel-slide-toggleable">
+                    <div class="tpl-user-panel-profile-picture">
+                        <img src="assets/img/user02.png" alt="">
+                    </div>
+                    <span class="user-panel-logged-in-text">
+              		<i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon" th:text="${name}"></i>
+          			   
+          			</span>
+                    <a href="javascript:;" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span>账号设置</a>
+                </div>
+            </div>   
+        <!-- 菜单  -->
+            <div >
+            <ul class="sidebar-nav">
+                 <menu-item  v-for="item in menuitems" v-bind:labeltext="item.labeltext" v-bind:styleobject=item.styleobject
+                       ></menu-item>
+                
+            </ul>
+            </div>
+        </div>
+        <div class="right-sidebar">
+        </div>
+        <!-- 内容  -->
+        
+	
+	     <div class="tpl-content-wrapper" id = "mapcontent">   
+	         
+	        
+	        <div class="tpl-content-wrapper-main" id="mapcavans" >
+	        	
+	        	<div id="map1_container" >
+	        		<div id="allmap1" > 
+	        			<div id="map" ></div>
+	        			
+				    </div>
+	        		
+	        		<div id="control" >
+							
+						<input type="button" value="获取绘制的覆盖物个数" onclick="alert(overlays.length)"/>
+	                    <input type="button" value="清除所有覆盖物" onclick="clearAll()"/>
+	                    <input type="button" value="获取最后一个覆盖物信息" id="getLastOverLay"/>
+	                    <input type="button"  value="获取图层信息" onclick="getLayer(1)"/><br/>
+					</div>
+	        		
+	        	</div>
+	        	
+	            <div class="panelWrap" >
+	            	<div>
+	            		
+	            		
+	            		<button id="drawDiscrictButton" type="button" class="am-btn am-btn-secondary am-radius am-btn-block">新建图层</button>
+	            		<button type="button" class="am-btn am-btn-success am-radius am-btn-block">导入数据</button>
+	            		
+	            	</div>
+				  
+	        	
+               </div>  
+               <div  id="popBox" class="popbox grid-name">
+				    <div class="close">
+				        <a href="javascript:void(0)" onclick="closeBox()">关闭</a>
+				    </div>
+				   
+				    <div class="content" style= "margin:0 auto;">
+				    	<ul>
+							<li><span>网格名称:</span><input id="gridname" type="text" name="firstname" value="Mickey"></li>		
+							<li><span>网格经理:</span><input id="gridmana" type="text" name="lastname" value="Mouse"></li>
+							<li><input id="submit" type="submit" value="确定" style="width:50px; "><input id="reset" type="reset" style = "width:50px;position:relative;left:100px"  value="重填" ></li>
+						</ul>
+					</div>
+				</div>
+             
+           </div>
+	     
+          </div> 
+        
+        
+    </div>
+    <script type="text/javascript">
+         
+        var menuItem = {
+        props: ['labeltext','styleobject'],
+		template: `
+          <li class="sidebar-nav-link">
+                    <a href="#">
+                        <i v-bind:class="styleobject"></i> {{ labeltext }}
+                    </a>
+         </li>
+          `     
+        };
+        
+         new Vue({
+            el: '#allpagecontent',
+            components: {
+                'menu-item':menuItem
+                
+            },
+            data:{
+      		menuitems: [
+		      {labeltext:"图层管理",styleobject:"am-icon-home sidebar-nav-link-logo"},
+		      {labeltext:"统计分析",styleobject:"am-icon-table sidebar-nav-link-logo" },
+		      {labeltext:"导入数据",styleobject:"am-icon-calendar sidebar-nav-link-logo" },
+		      {labeltext:" 表单",styleobject:"am-icon-wpforms sidebar-nav-link-logo" }
+              ]
+                
+             }
+          });
+          
+        var map = new BMap.Map('map',{enableMapClick: false});
+	    var poi = new BMap.Point(116.307852,40.057031);
+	    map.centerAndZoom(poi, 16);
+	    map.enableScrollWheelZoom();
 
-new Vue({ el: '#components-demo' ,
-data: {
-    post: 
-      {id: 1, title: 'My journey with Vue',author:{name:'oyxh'} }
-    
-  }});
-
-</script>
-</body>
+    </script>
+    </body>
 </html>
