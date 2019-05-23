@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>vue学习</title>
+<script src="assets/js/vue.js"></script>
+<script src="assets/js/axios.min.js"></script>
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/js/plugins/layui/css/layui.css">
+</head>
+<body>
+    <div id="app" class="am-form tpl-form-line-form">
+ 
+          <div>
+              
+              
+            <form-group  v-for="item in sites" v-bind:message="item.text" v-bind:placeholder=item.placeholder
+            v-bind:type=item.type v-bind:id=item.id v-bind:name=item.name v-bind:styleobject="item.styleobject" 
+            @change="update"></form-group>
+          
+          <oy-check-box v-bind:checked="isSelect.checked" v-bind:id="isSelect.id" v-bind:labeltext="isSelect.labeltext"
+          v-bind:styleobject="isSelect.styleobject" ></oy-check-box>
+          <oy-button   v-bind:labeltext="submitbutton.labeltext" v-bind:type="submitbutton.type"
+          v-bind:styleobject="submitbutton.styleobject" v-bind:stylebutton="submitbutton.stylebutton"
+          @login="handleLogin"></oy-button>
+          </div>
+    </div>
+ <script src="assets/js/plugins/layui/layui.all.js"></script>
+<script>
+
+	var formGroup = {
+        props: ['message','placeholder','type','name','id','styleobject'],
+        data () {
+        return {
+            textValue: this.message
+            }
+        },
+		template: `
+           <div v-bind:class="styleobject"> <input type="text" name="name"   
+            v-bind:id="id" v-bind:placeholder="placeholder" v-model="textValue" ></div>
+          `,
+       
+        watch:{
+            textValue:{
+                 handler(newName, oldName) {
+                   
+                     this.$emit('change',newName,this.id);
+                }
+            }
+                
+        }
+
+	}
+    var oyCheckBox = {
+		props: ['checked','labeltext','id','styleobject'],   //选择值,labelText选择框后面的名字
+		template: `
+		   <div v-bind:class="styleobject"><input type="checkbox"  v-bind:labelText="labeltext" v-model="checked" >
+           <label for="checkbox">{{ labeltext }}</label></div>
+		  `
+    }
+    var oyButton = {
+		props: ['type','labeltext','styleobject','stylebutton'],   //选择值,labelText选择框后面的名字
+		template: `
+		   <div v-bind:class="styleobject">
+                <button v-bind:type="type" @click="clickButton" v-bind:class="stylebutton">{{ labeltext }}</button>
+            </div>
+          `,
+         methods:{
+            clickButton(){
+                var flag = true;
+              
+                this.$emit('login',flag)
+            }
+         }
+    }
+
+ 
+
+
+    new Vue({
+        el: '#app',
+        components: {
+            'form-group':formGroup,
+            'oy-check-box':oyCheckBox,
+            'oy-button':oyButton
+        },
+       data:{
+      		sites: [
+		      { text: 'admin', placeholder:'user',type:'text',name:'username',id:'username',styleobject:"am-form-group"},
+		      { text: 'admin',placeholder:'password',type:'text',name:'password',id:'password',styleobject:"am-form-group" },
+              ],
+            isSelect:{checked:false,labeltext:"记住密码",id:'checkbox_denglu',styleobject:"am-form-group tpl-login-remember-me"},
+            submitbutton:{labeltext:"登录",styleobject:"am-form-group",type:'submit',stylebutton:"am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn"
+             }
+          },
+        methods:{
+        handleLogin(flag){//触发子组件点击
+          
+            axios({
+                method: 'post',
+                url:'login',
+                data:{
+                    username:this.sites[0].text,
+                    password:this.sites[1].text
+                },
+                transformRequest: [function (data) { //登录时处理数据格式,处理后后台接收的参数为data按顺序传递
+                  let ret = ''
+                  for (let it in data) {
+                   ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                  }
+                  return ret;
+              }]
+            })
+            .then(function (response) {
+                console.log(response);
+                if (response.data.code == 0) {
+                    parent.location.href = '/index';
+                } else {
+                    
+                    //layer.msg(response.msg);
+                    //alert(response.data.msg);
+                    layui.use(['layer', 'form'], function(){
+                    var layer = layui.layer
+                    ,form = layui.form;
+                    layer.msg(response.data.msg);
+                    });
+				}
+            })
+            .catch(function (error) {
+                console.log(error);
+               
+            });
+
+        },
+        update(newName,id){//触发子组件内容变化
+           
+            for(var i=0;i<this.sites.length;i++){
+                if(this.sites[i].id == id){
+                    this.sites[i].text =  newName;
+                }
+            }
+            //this.sites.text=newName;
+        }
+      }
+
+
+    })
+</script>
+
+
+</body>
+
+</html>

@@ -46,7 +46,6 @@ public class PrimeController extends BaseController {
        
    	 return  "login";
 	}
-	
 
 	
 	@Log("登录")
@@ -67,6 +66,8 @@ public class PrimeController extends BaseController {
 			return R.error("用户或密码错误");
 		}
 	}
+	
+
 	
 	@Log("请求访问主页")
 	@GetMapping({"/index"})
