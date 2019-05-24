@@ -26,7 +26,7 @@
             <!--右侧内容 -->
             <div class="tpl-header-fluid">
               <!-- 侧边切换 -->
-                <div class="am-fl tpl-header-switch-button am-icon-list">
+                <div class="am-fl tpl-header-switch-button am-icon-list" @click=autoLeft>
                     <span>
 
                 </span>
@@ -38,7 +38,7 @@
    
         
           <!-- 侧边导航栏  -->
-        <div class="left-sidebar">  
+        <div class="left-sidebar" :class={active:styleleftactive}>  
        <!-- 用户信息 -->
          	<div class="tpl-sidebar-user-panel">
                 <div class="tpl-user-panel-slide-toggleable">
@@ -56,7 +56,7 @@
             <div >
             <ul class="sidebar-nav">
                  <menu-item  v-for="item in menuitems" v-bind:labeltext="item.labeltext" v-bind:styleobject=item.styleobject
-                       ></menu-item>
+                      :order=item.order @menuitemclick=getMenu ></menu-item>
                 
             </ul>
             </div>
@@ -66,12 +66,12 @@
         <!-- 内容  -->
         
 	
-	     <div class="tpl-content-wrapper" id = "mapcontent">   
+	     <div class="tpl-content-wrapper" id = "mapcontent" :class={active:stylemainactive}>   
 	         
 	        
 	        <div class="tpl-content-wrapper-main" id="mapcavans" >
 	        	
-	        	<div id="map1_container" >
+	        	<div id="map1_container" :class={isshow:stylemapshow}>
 	        		<div id="allmap1" > 
 	        			<div id="map" ></div>
 	        			
@@ -87,7 +87,7 @@
 	        		
 	        	</div>
 	        	
-	            <div class="panelWrap" >
+	            <div class="panelWrap" :class={isshow:stylepanelwrapshow}>
 	            	<div>
 	            		
 	            		
@@ -118,17 +118,25 @@
         
         
     </div>
-    <script type="text/javascript">
-         
+    <script th:inline="javascript" >
+
+ 
+    
         var menuItem = {
-        props: ['labeltext','styleobject'],
+        props: ['labeltext','styleobject','order'],
 		template: `
-          <li class="sidebar-nav-link">
+          <li class="sidebar-nav-link" @click=menuclick>
                     <a href="#">
                         <i v-bind:class="styleobject"></i> {{ labeltext }}
                     </a>
          </li>
-          `     
+          `  ,
+          methods:{
+                menuclick(){
+                    
+                    this.$emit('menuitemclick',this.order);
+                }
+          }   
         };
         
          new Vue({
@@ -139,12 +147,28 @@
             },
             data:{
       		menuitems: [
-		      {labeltext:"图层管理",styleobject:"am-icon-home sidebar-nav-link-logo"},
-		      {labeltext:"统计分析",styleobject:"am-icon-table sidebar-nav-link-logo" },
-		      {labeltext:"导入数据",styleobject:"am-icon-calendar sidebar-nav-link-logo" },
-		      {labeltext:" 表单",styleobject:"am-icon-wpforms sidebar-nav-link-logo" }
-              ]
+		      {labeltext:"图层管理",styleobject:"am-icon-home sidebar-nav-link-logo",order:1},
+		      {labeltext:"统计分析",styleobject:"am-icon-table sidebar-nav-link-logo",order:2},
+		      {labeltext:"导入数据",styleobject:"am-icon-calendar sidebar-nav-link-logo" ,order:3},
+		      {labeltext:" 表单",styleobject:"am-icon-wpforms sidebar-nav-link-logo",order:4 }
+              ],
+             styleleftactive:false,    //左边栏是否活动
+             stylemainactive:false,  //
+             stylepanelwrapshow:false,
+             stylemapshow:false
                 
+             },
+             methods:{
+                autoLeft(){
+                   
+                    this.styleleftactive=!this.styleleftactive;
+                    this.stylemainactive=!this.stylemainactive;
+                    
+                },
+                getMenu(order){
+                    this.stylepanelwrapshow=!this.stylepanelwrapshow;
+                    this.stylemapshow=!this.stylemapshow;
+                }
              }
           });
           

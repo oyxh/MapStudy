@@ -74,8 +74,8 @@ public class PrimeController extends BaseController {
 	public String  getIndex(Model model) {
 		// 查询列表数据
 		
-		//model.addAttribute("name", getUser().getName());
-		//logger.info(getUser().getName());
+		model.addAttribute("name", getUser().getName());
+		logger.info(getUser().getName());
 		return  "index";
 	}
 	/*
