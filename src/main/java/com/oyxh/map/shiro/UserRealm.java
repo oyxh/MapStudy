@@ -41,10 +41,10 @@ public class UserRealm extends AuthorizingRealm {
 		Map<String, Object> map = new HashMap<>();
 		map.put("username", username);
 		String password = new String((char[]) token.getCredentials());
-
+		
 		// 查询用户信息
 		UserDO user = userMapper.list(map).get(0);
-
+		
 		// 账号不存在
 		if (user == null) {
 			throw new UnknownAccountException("账号或密码不正确");

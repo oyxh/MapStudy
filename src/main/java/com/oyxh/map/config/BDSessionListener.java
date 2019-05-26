@@ -11,6 +11,8 @@ public class BDSessionListener implements SessionListener {
 
 	@Override
 	public void onStart(Session session) {
+		System.out.println(session.getHost()+" start...");
+		System.out.println(session.getAttributeKeys()+" start...");
 		sessionCount.incrementAndGet();
 	}
 

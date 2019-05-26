@@ -88,17 +88,15 @@
 	        	</div>
 	        	
 	            <div class="panelWrap" :class={isshow:stylepanelwrapshow}>
-	            	<div>
+	            	<div class="panelWrapson" :class={isshow:stylepanelwrapshow}>
+	            		<layer-item :order=layerOrder ></layer-item>
 	            		
-	            		
-	            		<button id="drawDiscrictButton" type="button" class="am-btn am-btn-secondary am-radius am-btn-block">新建图层</button>
-	            		<button type="button" class="am-btn am-btn-success am-radius am-btn-block">导入数据</button>
 	            		
 	            	</div>
 				  
 	        	
                </div>  
-               <div  id="popBox" class="popbox grid-name">
+               <form   id="popBox" class="popbox grid-name">
 				    <div class="close">
 				        <a href="javascript:void(0)" onclick="closeBox()">关闭</a>
 				    </div>
@@ -110,7 +108,7 @@
 							<li><input id="submit" type="submit" value="确定" style="width:50px; "><input id="reset" type="reset" style = "width:50px;position:relative;left:100px"  value="重填" ></li>
 						</ul>
 					</div>
-				</div>
+				</form>
              
            </div>
 	     
@@ -118,10 +116,11 @@
         
         
     </div>
+    <script src="assets/js/plugins/layui/layui.all.js"></script>
     <script th:inline="javascript" >
 
  
-    
+    //菜单组件
         var menuItem = {
         props: ['labeltext','styleobject','order'],
 		template: `
@@ -138,11 +137,154 @@
                 }
           }   
         };
-        
+        var singleLayer = {
+  			props:['layerChange'],
+  			data:function(){
+            	return {
+            		layersget:[{layerId:null,layerName:null,layerData:null,userId:null}],
+            		 styleObjectLabel: {
+					    color: '#868E8E',
+					    fontSize: '13px',
+					    height:'30px',
+					    border:'2px solid #fff',
+					    background:'#F8F8F8',
+					    width:'50%'
+						
+					  }
+            	}
+            },
+  			template:`
+  			<div>
+  	
+  				<div v-for="layer in this.layersget" >
+  					<li><div :style="styleObjectLabel">{{layer.layerName}} <span class="am-icon-eye" ></span></div></li>
+  					</div>
+  					<div style="visibility: hidden">{{getmsg}}</div>	<!--计算属性执行，函数getmsg返回值为layerchange,该值变化就会执行该函数	-->	
+  			</div>
+  			`,
+  			computed:{
+  				
+				getmsg:function(){   //获取图层的请求
+				var that = this;
+				var postconfig={
+	                   method: 'get',
+	                   url:'layerlist' 
+	               };
+	          
+		 		 axios(postconfig)
+	               .then(
+	               	function (response) {
+	               		 console.log(response);
+					      that.layersget = response.data;
+					      
+					      }
+	                                
+	               )
+	               .catch(function (error) {
+	                   console.log(error);
+	               
+	               });  //axios
+	               return that.layerChange;
+				}
+				
+					
+			}
+			
+			
+  		}   ;
+        //图层内容
+        var layerItem = {
+            props: ['order'],
+              components: {
+                'single-layer':singleLayer             
+            },
+            data:function(){
+            	return{
+            		watchLayerChange:false   //图层变化监控，如图层变动，该值反向
+            	}
+            },
+            template: `
+            <div id="test">
+                    <div v-show="order === 1">
+                        <button id="drawDiscrictButton" type="button" class="am-btn am-btn-secondary am-radius am-btn-block" @click=addLayer>新建图层</button>
+                        <button type="button" class="am-btn am-btn-success am-radius am-btn-block">导入数据</button>
+                        <single-layer :layerChange="watchLayerChange"></single-layer>
+                    </div>
+                    <div v-show="order === 2">
+                        {{order}}
+                    </div>
+                    <div v-show="order === 3">
+                        {{order}}
+                    </div>
+                    
+                    <div v-show ="order === 4">
+                    {{order}}
+                    </div>
+                
+            </div>
+          ` ,
+          methods:{
+            addLayer(){
+                    var that = this;
+                    layui.use(['layer', 'form'], function(){
+                    var layer = layui.layer
+                    ,form = layui.form;
+					  layer.prompt({title: '图层名称', formType: 2}, function(text, index){
+					    layer.close(index);
+					  
+					    var postconfig={
+                                method: 'post',
+                                url:'addlayer',
+                                data:{
+                                    layerName:text,
+                   					
+                                   
+                                },
+                                transformRequest: [function (data) { //登录时处理数据格式,处理后后台接收的参数为data按顺序传递
+                                  let ret = ''
+                                  for (let it in data) {
+                                   ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                                  }
+                                  return ret;
+                              }]
+                            };
+                       
+					     axios(postconfig)
+                            .then(
+                            
+                                function (response) {
+                               that.watchLayerChange =!that.watchLayerChange;
+                                console.log(response);
+                                 that.startDraw();
+                                
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            
+                            });  //axios
+					    
+					  });//promt
+						
+				});
+                 
+                   
+            },
+            startDraw(){
+                alert("startDraw");
+                
+            }
+
+
+          }
+        } ;
+  
+  	 
+  		  
          new Vue({
             el: '#allpagecontent',
             components: {
-                'menu-item':menuItem
+                'menu-item':menuItem,
+                'layer-item':layerItem
                 
             },
             data:{
@@ -155,8 +297,8 @@
              styleleftactive:false,    //左边栏是否活动
              stylemainactive:false,  //
              stylepanelwrapshow:false,
-             stylemapshow:false
-                
+             stylemapshow:false,
+             layerOrder: 1   //当前操作图层框的菜单栏，为1表示当前操作框为1图层
              },
              methods:{
                 autoLeft(){
@@ -166,8 +308,13 @@
                     
                 },
                 getMenu(order){
-                    this.stylepanelwrapshow=!this.stylepanelwrapshow;
-                    this.stylemapshow=!this.stylemapshow;
+                    if(this.layerOrder == order){
+                    
+                        this.stylepanelwrapshow=!this.stylepanelwrapshow;
+                        this.stylemapshow=!this.stylemapshow;
+                    }else{
+                        this.layerOrder = order;
+                    }
                 }
              }
           });

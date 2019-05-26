@@ -22,7 +22,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: mybatis/**/*Mapper.xml
-  typeAliasesPackage: com.mypeom.**
+  typeAliasesPackage: com.oyxh.map.**
 
 wechat:
   miniapp:

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oyxh.map.dao.LayerDao">
+	<insert id="save" parameterType="com.oyxh.map.domain.LayerDO"
+		useGeneratedKeys="true" keyProperty="layerId">
+		insert into sys_layer
+		(
+		`layer_name`,
+		`layer_data`,
+		`user_id`
+		)
+		values
+		(
+		#{layerName},
+		#{layerData},
+		#{userId}
+		)
+	</insert>
+
+	<select id="list" resultType="com.oyxh.map.domain.LayerDO">
+		select
+		`layer_id`,`layer_name`,`layer_data`,`user_id`
+		from sys_layer
+		<where>
+			<if test="layerId != null and layerId != ''"> and layer_id = #{layerId} </if>
+			<if test="layerName != null and layerName != ''"> and layer_name = #{layerName} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by layer_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+</mapper>
