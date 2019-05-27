@@ -28,10 +28,10 @@ public interface LayerDao {
 	int count(Map<String,Object> map);*/
 	List<LayerDO> list(Map<String,Object> map);
 	int save(LayerDO layer);
-	
+	int remove(Long layer_id);
 	/*int update(LayerDO layer);
 	
-	int remove(Long layer_id);
+	
 	
 	int batchRemove(Long[] layerIds);*/
 }

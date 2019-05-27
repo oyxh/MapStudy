@@ -45,6 +45,14 @@ public class LayerServiceImpl implements LayerService {
 		
 		return count;
 	}
+	
+	@Override
+	public int remove(Long layer_id) {
+		int count = layerMapper.remove(layer_id);
+		
+		return count;
+	}
+
 
 	/*@Override
 	public int update(LayerDO layer) {
@@ -52,12 +60,7 @@ public class LayerServiceImpl implements LayerService {
 		return 0;
 	}
 
-	@Override
-	public int remove(Long layer_id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	
 	@Override
 	public int batchRemove(Long[] layerIds) {
 		// TODO Auto-generated method stub

@@ -39,4 +39,9 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+    <delete id="remove">
+		delete from sys_layer where layer_id = #{value}
+	</delete>
+
 </mapper>

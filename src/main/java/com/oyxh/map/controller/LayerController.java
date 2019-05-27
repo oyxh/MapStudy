@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,4 +76,18 @@ public class LayerController {
 		List<LayerDO> layers = layerService.list(params);
 		return layers;
 	}
+	
+	@Log("删除图层")
+	@PostMapping("/removelayer")
+	@ResponseBody()
+	R delete(Long id) {
+		System.out.println("delete layer"+id.toString());
+		if (layerService.remove(id) > 0) {
+			return R.ok();
+		} else {
+			return R.error(1, "删除失败");
+		}
+	}
+	
+	
 }
