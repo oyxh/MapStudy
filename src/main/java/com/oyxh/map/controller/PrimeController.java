@@ -56,8 +56,8 @@ public class PrimeController extends BaseController {
 		
 		password = MD5Utils.encrypt(username, password);
 		
-		
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+		
 		Subject subject = SecurityUtils.getSubject();
 		try {
 			subject.login(token);

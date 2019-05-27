@@ -142,23 +142,62 @@
   			data:function(){
             	return {
             		layersget:[{layerId:null,layerName:null,layerData:null,userId:null}],
-            		 styleObjectLabel: {
-					    color: '#868E8E',
+            		
+                      styleObjectItem:{
+                        height:'100%',
+                        border:'2px solid blue',
+                        borderTop:'none'
+                      },
+                      styleObjectItemAll:{
+                        color: '#868E8E',
 					    fontSize: '13px',
-					    height:'30px',
-					    border:'2px solid #fff',
-					    background:'#F8F8F8',
-					    width:'50%'
+					    height:'38px',
+                        background:'#D8D8D8',
+                        width:'100%',
+                        float:'right',
+                        textAlign:'center',
+                         lineHeight:'38px',
+                        display:'inline'
+                      },
+                      buttonLeft:{
+                        width:'49%',
+                        float:'left'
+                      },
+                      buttonRight:{
+                        width:'49%',
+                        float:'right'
+                      },
+                       styleObjectItemLeft: {
+					    color: '#868E8E',
+					    fontSize: '15px',
+					    height:'38px',
+                        background:'#D8D8D8',
+                        textAlign:'center',
+                        lineHeight:'38px',
+                        width:'70%',
+                        float:'left',
+                        display:'inline'
+                        
 						
-					  }
+                      },
             	}
             },
   			template:`
-  			<div>
+  			<div >
   	
-  				<div v-for="layer in this.layersget" >
-  					<li><div :style="styleObjectLabel">{{layer.layerName}} <span class="am-icon-eye" ></span></div></li>
-  					</div>
+  				<div  :style="styleObjectItem" v-for="layer in this.layersget" >
+                        <div v-bind:style="styleObjectItemAll">
+                                                                                                图层名称:{{layer.layerName}}
+                        </div> 
+                        <div> 
+                        <button type="button" class="am-btn am-btn-success" :style="buttonLeft">绿色按钮</button>  
+                        <button type="button" class="am-btn am-btn-success" :style="buttonRight">绿色按钮</button>
+                        <button type="button" class="am-btn am-btn-success" :style="buttonLeft">绿色按钮</button>  
+                        <button type="button" class="am-btn am-btn-success" :style="buttonRight">绿色按钮</button>
+                        </div>                   
+                        <div style="clear: both;display: none;"></div>
+
+  				</div>
   					<div style="visibility: hidden">{{getmsg}}</div>	<!--计算属性执行，函数getmsg返回值为layerchange,该值变化就会执行该函数	-->	
   			</div>
   			`,
