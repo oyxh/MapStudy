@@ -4,13 +4,8 @@
   			data:function(){
             	return {
             		layersget:[{layerId:null,layerName:null,layerData:null,userId:null}],
-            		
-                      styleObjectItem:{
-                        height:'100%',
-                        display:'inline-block',
-                        border:'2px solid #66b3FF'
-                        
-                      },
+                        activeLayer:0,
+                     
                       styleObjectItemAll:{
                         color: '#868E8E',
 					    fontSize: '13px',
@@ -46,7 +41,9 @@
   			template:`
   			<div >
   	
-  				<div  :style="styleObjectItem" v-for="(layer,index) in this.layersget" @click=clickSingleLayer($event,layer.layerName,index) >
+                  <div   v-for="(layer,index) in this.layersget" :style= "{height:'100%',display:'inline-block',
+                  border: index === activeLayer ? '2px solid blue' : '2px solid #66b3FF'}"
+                  @click=clickSingleLayer($event,layer.layerName,index) >
                         <div v-bind:style="styleObjectItemAll">
                         	<label>图层名称:{{layer.layerName}}- {{ index }}</label>
                              
@@ -98,16 +95,17 @@
 	               .catch(function (error) {
 	                   console.log(error);
 	               
-	               });  //axios
+                   });  //axios
+                   
 	               return that.layerChange;
-				}
+                }
+             
 				
 					
 			},
 			methods:{
 				clickSingleLayer(e,layerName,index){
-					alert(layerName);
-					alert(index);
+                    this.activeLayer = index;
 				},
 				
 				deleteLayer(e,layerId){   //删除图层
@@ -160,7 +158,8 @@
 				
 					this.$emit('layerwatch');   //图层发生变化，
 					
-				},
+                },
+              
 				drawLayer(){
 					this.$emit('drawlayerfromson');
 				}
