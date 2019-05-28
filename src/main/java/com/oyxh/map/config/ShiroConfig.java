@@ -82,7 +82,7 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/assets/img/**", "anon");
 		filterChainDefinitionMap.put("/assets/i/**", "anon");
 		filterChainDefinitionMap.put("/", "anon");
-		//filterChainDefinitionMap.put("/**", "authc");
+		filterChainDefinitionMap.put("/**", "authc");
 
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
