@@ -1,11 +1,11 @@
 //单个图层组件,父组件为layerItem
         var singleLayer = {
-  			props:['layerChange'],
+  			props:['layerChange','newLayer'],
   			data:function(){
             	return {
             		layersget:[{layerId:null,layerName:null,layerData:null,userId:null}],
-                        activeLayer:0,
-                     
+                        
+                     activeLayer:0,
                       styleObjectItemAll:{
                         color: '#868E8E',
 					    fontSize: '13px',
@@ -161,9 +161,15 @@
                 },
               
 				drawLayer(){
-					this.$emit('drawlayerfromson');
+					alert("startDraw");
 				}
-			}
+            },
+            watch:{
+                newLayer:function(newVal,oldVal){  //newLayer发生变化，父组件的新建图层按钮传来新建图层的信息，活跃图层变为0
+                   this.activeLayer = 0;  
+                   this.drawLayer();
+                }
+            }
 							
           }   ;
           

@@ -6,7 +6,8 @@
             },
             data:function(){
             	return{
-            		watchLayerChange:false   //图层变化监控，如图层变动，该值反向
+                    watchLayerChange:false,   //图层变化监控，如图层变动，该值反向
+                    watchAddLayer:false
             	}
             },
             template: `
@@ -14,7 +15,7 @@
                     <div v-show="order === 1">
                         <button id="drawDiscrictButton" type="button" class="am-btn am-btn-secondary am-radius am-btn-block" @click=addLayer>新建图层</button>
                         <button type="button" class="am-btn am-btn-success am-radius am-btn-block">导入数据</button>
-                        <single-layer :layerChange="watchLayerChange" @layerwatch=layerChange @drawlayerfromson=startDraw ></single-layer>
+                        <single-layer :layerChange="watchLayerChange" :newLayer=watchAddLayer @layerwatch=layerChange @drawlayerfromson=startDraw ></single-layer>
                     </div>
                     <div v-show="order === 2">
                         {{order}}
@@ -79,7 +80,7 @@
             	this.watchLayerChange = !this.watchLayerChange;
             },
             startDraw(){
-                alert("startDraw");
+                this.watchAddLayer=!this.watchAddLayer;
                 
             }
 
