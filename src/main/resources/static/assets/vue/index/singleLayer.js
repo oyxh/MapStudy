@@ -115,6 +115,10 @@
 					this.overlaysInLayers=[];
 					for(var i=0;i<this.layersget.length;i++){
 						var overlays=[];    //layersget的数据中生成
+						var overlaysMarker =[];
+						var overlaysPolygon=[];
+						overlays.push(overlaysMarker);
+						overlays.push(overlaysPolygon);
 						this.overlaysInLayers.push(overlays);
 					}
 					
@@ -174,7 +178,7 @@
               	generateDrawTool(){
               		if (this.drawTool == null) {
 						var drawingManager = new BMapLib.DrawingManager(map, {
-				       isOpen: false, //是否开启绘制模式
+				       isOpen: true, //是否开启绘制模式
 				        enableDrawingTool: true, //是否显示工具栏
 				        //drawingMode:BMAP_DRAWING_POLYGON,//绘制模式  多边形
 				        drawingToolOptions: {
@@ -193,20 +197,34 @@
 				        rectangleOptions: this.styleOptions //矩形的样式
 				    	});
 				    	this.drawTool=drawingManager;
-					}
-              		
-					
-			    	
+				    	this.drawTool.removeEventListener("add");
+						this.drawTool.addEventListener('overlaycomplete', this.overlaycomplete,"add");
+					}    	
 				},
-				generateOverlays(){  //新建图层生成图层的覆盖物集合
+				generateOverlays(){  //新建图层生成图层的覆盖物集合，在overlaysInLayers的上面新增一个放在最前面
 					var overlays=[];
+					
+					var overlaysMarker =[];
+					var overlaysPolygon=[];
+					overlays.push(overlaysMarker);
+					overlays.push(overlaysPolygon);
+					
 					this.overlaysInLayers.unshift(overlays);
 					return overlays;
 				},
 				overlaycomplete(e){
-					alert("overlaycomplete");
+					//alert("overlaycomplete");
+					alert(e.drawingMode);
 					var overlays = this.overlaysInLayers[this.activeLayer];
-				       overlays.push(e.overlay);
+					var overlaysMarker = overlays[0];
+					var overlayspolygon = overlays[1];
+					if(e.drawingMode==BMAP_DRAWING_MARKER){
+						alert("addamarker");
+						overlaysMarker.push(e.overlay);
+					}else{
+						overlayspolygon.push(e.overlay);
+					}
+				      // overlays.push(e.overlay);
 				       
 				     /*  var path = e.overlay.getPath();//Array<Point> 返回多边型的点数组
 				        for(var i=0;i<path.length;i++){
@@ -219,8 +237,7 @@
 				
 					
 					this.generateDrawTool();
-				
-					this.drawTool.addEventListener('overlaycomplete', this.overlaycomplete);
+					
 					
 				}
 				
@@ -228,7 +245,7 @@
 				
             },
             watch:{
-                newLayer:function(newVal,oldVal){  //newLayer发生变化，父组件的新建图层按钮传来新建图层的信息，活跃图层变为0
+                newLayer:function(newVal,oldVal){  //newLayer发生变化，父组件的新建图层按钮传来新建图层的信息，活跃图层变为0,执行新建图层
                    this.activeLayer = 0; 
                    this.generateOverlays();
                    this.drawLayer();
