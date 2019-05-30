@@ -78,11 +78,8 @@
 				    </div>
 	        		
 	        		<div id="control" >
-							
-						<input type="button" value="获取绘制的覆盖物个数" onclick="alert(overlays.length)"/>
-	                    <input type="button" value="清除所有覆盖物" onclick="clearAll()"/>
-	                    <input type="button" value="获取最后一个覆盖物信息" id="getLastOverLay"/>
-	                    <input type="button"  value="获取图层信息" onclick="getLayer(1)"/><br/>
+						<input type="button" value="清除所有覆盖物" onclick="clearAll()"/>	
+						
 					</div>
 	        		
 	        	</div>
@@ -166,6 +163,10 @@
 	    var poi = new BMap.Point(116.307852,40.057031);
 	    map.centerAndZoom(poi, 16);
 	    map.enableScrollWheelZoom();
+	    
+	    function clearAll(){
+	    	map.clearOverlays();
+	    }
 
     </script>
     </body>

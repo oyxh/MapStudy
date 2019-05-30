@@ -1,10 +1,10 @@
-//单个图层组件,父组件为layerItem
+//图层组件,父组件为layerItem,用于生成各个图层及操作
         var singleLayer = {
   			props:['layerChange','newLayer'],
   			data:function(){
             	return {
             		layersget:[{layerId:null,layerName:null,layerData:null,userId:null}],
-                        
+                    overlaysInLayers:[],  //各格图层的覆盖物集合，生成一个添加一个。   
                      activeLayer:0,
                       styleObjectItemAll:{
                         color: '#868E8E',
@@ -33,14 +33,20 @@
                       },
                        checkeButton:{
                       	marginLeft:'15px'
-                      }
-                      
-                  
+                      },
+                      styleOptions:{  //绘制图形的式样
+                      	strokeColor:"red",    //边线颜色。
+				        fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+				        strokeWeight: 2,       //边线的宽度，以像素为单位。
+				        strokeOpacity: 0.8,       //边线透明度，取值范围0 - 1。
+				        fillOpacity: 0.1,      //填充的透明度，取值范围0 - 1。
+				        strokeStyle: 'solid' //边线的样式，solid或dashed。
+                      },
+                      drawTool:null                
             	}
             },
-  			template:`
-  			<div >
-  	
+  			template: `
+  				<div >
                   <div   v-for="(layer,index) in this.layersget" :style= "{height:'100%',display:'inline-block',
                   border: index === activeLayer ? '2px solid blue' : '2px solid #66b3FF'}"
                   @click=clickSingleLayer($event,layer.layerName,index) >
@@ -53,7 +59,7 @@
                                 </label>
                                 <input  type="checkbox" value="checked" >
                                 
-                        	<button type="button" class="am-close"  :style="closeButton" @click=deleteLayer($event,layer.layerId)>&times;</button>
+                        	<button type="button" class="am-close"  :style="closeButton" @click=deleteLayer($event,layer.layerId,index)>&times;</button>
                                  
                               
                         </div> 
@@ -88,7 +94,7 @@
 	               	function (response) {
 	               		 console.log(response);
 					      that.layersget = response.data;
-					      
+					      that.initOverlays();// 初始化图层
 					      }
 	                                
 	               )
@@ -99,18 +105,24 @@
                    
 	               return that.layerChange;
                 }
-             
-				
-					
+                
 			},
 			methods:{
 				clickSingleLayer(e,layerName,index){
                     this.activeLayer = index;
 				},
-				
-				deleteLayer(e,layerId){   //删除图层
-					var that = this;
+				initOverlays(){//初始化图层
+					this.overlaysInLayers=[];
+					for(var i=0;i<this.layersget.length;i++){
+						var overlays=[];    //layersget的数据中生成
+						this.overlaysInLayers.push(overlays);
+					}
 					
+				},
+				
+				deleteLayer(e,layerId,index){   //删除图层
+					var that = this;
+					this.overlaysInLayers.splice(index,1);
 					layui.use(['layer', 'form'], function(){
                     var layer = layui.layer
                     ,form = layui.form;
@@ -122,7 +134,7 @@
                                 method: 'post',
                                 url:'removelayer',
                                 data:{
-                                    id:layerId,
+                                    id:layerId
                                 },
                                 transformRequest: [function (data) { //登录时处理数据格式,处理后后台接收的参数为data按顺序传递
                                   let ret = ''
@@ -137,7 +149,7 @@
                             
                                 function (response) {
                                 
-                              	that.deleteSuccess();
+                              	that.changeSuccess();
                                 console.log(response);
                                 
                                 
@@ -154,19 +166,71 @@
 					});//layeruse
 					
 				},
-				deleteSuccess(){   //与父组件通信，告诉父组件图层变化。
+				changeSuccess(){   //与父组件通信，告诉父组件图层变化。
 				
 					this.$emit('layerwatch');   //图层发生变化，
 					
                 },
-              
+              	generateDrawTool(){
+              		if (this.drawTool == null) {
+						var drawingManager = new BMapLib.DrawingManager(map, {
+				       isOpen: false, //是否开启绘制模式
+				        enableDrawingTool: true, //是否显示工具栏
+				        //drawingMode:BMAP_DRAWING_POLYGON,//绘制模式  多边形
+				        drawingToolOptions: {
+				            anchor: BMAP_ANCHOR_TOP_LEFT, //位置
+				            offset: new BMap.Size(20, 5), //偏离值
+				            scale:0.8, //缩放
+				            drawingModes:[
+				            	BMAP_DRAWING_MARKER,
+				                BMAP_DRAWING_POLYGON,
+				                BMAP_DRAWING_RECTANGLE
+				            ]
+				        },
+				        circleOptions: this.styleOptions, //圆的样式
+				        polylineOptions: this.styleOptions, //线的样式
+				        polygonOptions: this.styleOptions, //多边形的样式
+				        rectangleOptions: this.styleOptions //矩形的样式
+				    	});
+				    	this.drawTool=drawingManager;
+					}
+              		
+					
+			    	
+				},
+				generateOverlays(){  //新建图层生成图层的覆盖物集合
+					var overlays=[];
+					this.overlaysInLayers.unshift(overlays);
+					return overlays;
+				},
+				overlaycomplete(e){
+					alert("overlaycomplete");
+					var overlays = this.overlaysInLayers[this.activeLayer];
+				       overlays.push(e.overlay);
+				       
+				     /*  var path = e.overlay.getPath();//Array<Point> 返回多边型的点数组
+				        for(var i=0;i<path.length;i++){
+				        	var pixelpoint=map.pointToPixel(path[i]);
+				            console.log("lng:"+path[i].lng+"\n lat:"+path[i].lat+"\n pixelx:"+pixelpoint.x+
+				            "\n pixely:"+pixelpoint.y);
+				        }*/
+				},
 				drawLayer(){
-					alert("startDraw");
+				
+					
+					this.generateDrawTool();
+				
+					this.drawTool.addEventListener('overlaycomplete', this.overlaycomplete);
+					
 				}
+				
+			
+				
             },
             watch:{
                 newLayer:function(newVal,oldVal){  //newLayer发生变化，父组件的新建图层按钮传来新建图层的信息，活跃图层变为0
-                   this.activeLayer = 0;  
+                   this.activeLayer = 0; 
+                   this.generateOverlays();
                    this.drawLayer();
                 }
             }
