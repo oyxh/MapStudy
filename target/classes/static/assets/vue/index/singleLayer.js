@@ -111,6 +111,36 @@
 				clickSingleLayer(e,layerName,index){
                     this.activeLayer = index;
 				},
+				getDistancePointTOLine(x,y,x1,y1,x2,y2){//x,y为点的位置,矢量法
+					var pointObject={
+						point:[],
+						dis:0.0
+					};
+					 var cross = (x2 - x1) * (x - x1) + (y2 - y1) * (y - y1);
+					if (cross <= 0) {
+						pointObject.point.put(y1);
+						pointObject.point.put(x1);
+						pointObject.dis = Math.pow((x - x1) * (x - x1) + (y - y1) * (y - y1),0.5);
+						return pointObject;
+					}									  
+					var d2 = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+					if (cross >= d2){
+						pointObject.point.put(y2);
+						pointObject.point.put(x2);
+						pointObject.dis = Math.pow((x - x2) * (x - x2) + (y - y2) * (y - y2),0.5);
+						return pointObject;
+					}				  
+					var r = cross / d2;
+					var px = x1 + (x2 - x1) * r;
+					var py = y1 + (y2 - y1) * r;
+					pointObject.point.put(py);
+					pointObject.point.put(px);
+					pointObject.dis =Math.pow((x - px) * (x - px) + (py - y) * (py - y),0.5);
+					return pointObject;					
+				},
+				getMinDistiance(flag){ //获取点最近的多边形覆盖物距离上的点 flag为true,全部图层，否则为活动图层
+					
+				},
 				initOverlays(){//初始化图层
 					this.overlaysInLayers=[];
 					for(var i=0;i<this.layersget.length;i++){
@@ -214,15 +244,16 @@
 				},
 				overlaycomplete(e){
 					//alert("overlaycomplete");
-					alert(e.drawingMode);
+					
 					var overlays = this.overlaysInLayers[this.activeLayer];
 					var overlaysMarker = overlays[0];
 					var overlayspolygon = overlays[1];
 					if(e.drawingMode==BMAP_DRAWING_MARKER){
-						alert("addamarker");
+						
 						overlaysMarker.push(e.overlay);
 					}else{
 						overlayspolygon.push(e.overlay);
+						//e.overlay.setStrokeWeight(5);
 					}
 				      // overlays.push(e.overlay);
 				       
