@@ -268,9 +268,18 @@
 				
 					
 					this.generateDrawTool();
+					this.stickMouse();
 					
 					
+				},
+				mousemoveAction(){console.log("move")},
+				stickMouse(){
+					 map.addEventListener('mousemove', this.mousemoveAction);
+				},
+				nostickMouse(){
+					 map.removeEventListener('mousemove', this.mousemoveAction);
 				}
+				
 				
 			
 				

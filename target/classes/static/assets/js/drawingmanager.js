@@ -9,6 +9,7 @@
  * @version 1.4
  */
 
+document.write('<script src="assets/js/polygon.js" type="text/javascript" charset="utf-8"></script>');
 /** 
  * @namespace BMap的所有library类均放在BMapLib命名空间下
  */
@@ -1026,11 +1027,21 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
             drawPoint    = null; //实际需要画在地图上的点
             overlay      = null,
             isBinded     = false;
+            isStick      = true;   //多边形时是否粘附
 
         /**
          * 鼠标点击的事件
          */
         var startAction = function (e) {
+            var currentPoints = points.concat(e.point);
+            if(window.isPolygon(currentPoints) == false){
+              if(window.currentFanceVueInstance){
+                window.currentFanceVueInstance.promptBox.mes = "该操作不被允许"
+                window.currentFanceVueInstance.promptBox.show = true;
+              }
+              window.drawPolygonEnable = false;
+              return;
+            }  
             if(me.controlButton == "right" && (e.button == 1 || e.button==0)){
                 return ;
             }
@@ -1059,9 +1070,23 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
          * 鼠标移动过程的事件
          */
         var mousemoveAction = function(e) {
+           /**  
+            var mapOverlays = map.getOverlays();   //地图上的所有覆盖物
+            var minRes=1000000;
+            var res;
+            for(mapoverlay in mapOverlays){
+                if(mapoverlay !=overlay&&mapoverlay.isVisible()){
+                    
+                    var res = getDistancePointTOLine(0,0,1,1,2,2).dis;
+                    
+                }
+            }
+            */
+        	e.point.lng +=0.002;
+            
             overlay.setPositionAt(drawPoint.length - 1, e.point);
         }
-
+        
         /**
          * 鼠标双击的事件
          */
@@ -1072,15 +1097,13 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
             mask.removeEventListener('mousedown',startAction);
             mask.removeEventListener('mousemove', mousemoveAction);
             mask.removeEventListener('dblclick', dblclickAction);
-            //console.log(me.controlButton);
             if(me.controlButton == "right"){
                 points.push(e.point);
             }
             else if(baidu.ie <= 8){
             }else{
-                points.pop();
+               // points.pop();
             }
-            //console.log(points.length);
             overlay.setPath(points);
             var calculate = me._calculate(overlay, points.pop());
             me._dispatchOverlayComplete(overlay, calculate);
