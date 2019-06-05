@@ -12,6 +12,7 @@
 
 <!--加载鼠标绘制工具-->
 <script type="text/javascript" src="assets/js/drawingmanager.js"></script>
+<script type="text/javascript" src="assets/js/polygon.js"></script>
 <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
 </head>
 <body data-type="index">
@@ -81,6 +82,7 @@
 	        		<div id="control" >
 						<input type="button" value="清除所有覆盖物" onclick="clearAll()"/>	
 						<input type="button" value="开通/关闭编辑" onclick="openEdit()"/>
+						<input type="button" value="多边形函数测试" onclick="ftest()"/>
 					</div>
 	        		
 	        	</div>
@@ -172,6 +174,22 @@
 	    function openEdit(){
 	    	var overlays = map.getOverlays();
 	    	overlays[overlays.length -1].enableEditing();
+	    }
+	      function ftest(){
+	    	var overlays = map.getOverlays();
+	    	for(i in overlays){ 	
+	    		
+	    	var exline ={	S:{
+		          x:0,
+		          y:0,
+		        },
+		        E:{
+		          x:0,
+		          y:0,
+		        }};
+	    		console.log(overlays[i].toString());
+	    		console.log(getPolygonLine((overlays[i]).getPath(),exline));
+	    	}
 	    }
 
     </script>

@@ -1070,19 +1070,24 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
          * 鼠标移动过程的事件
          */
         var mousemoveAction = function(e) {
-           /**  
+            
             var mapOverlays = map.getOverlays();   //地图上的所有覆盖物
             var minRes=1000000;
             var res;
-            for(mapoverlay in mapOverlays){
-                if(mapoverlay !=overlay&&mapoverlay.isVisible()){
+            for(i in mapOverlays){
+                if(mapOverlays[i] !=overlay&&mapOverlays[i].isVisible()&&mapOverlays[i].toString()=="[object Polygon]"){
                     
-                    var res = getDistancePointTOLine(0,0,1,1,2,2).dis;
+                    var polygonLine = getPolygonLine(mapOverlays[i].getPath(),{S:{ x:0,y:0},E:{ x:0,y:0}});
+                    for(j in polygonLine ){
+                    	res = window.getDistancePointTOLine(e.point.lat,e.point.lng,polygonLine[j].S.x,polygonLine[j].S.y,polygonLine[j].E.x,polygonLine[j].E.y);
+                    	console.log("polygon"+i+":"+e.point.lng+","+e.point.lat+","+"第"+j+"线段距离："+res.dis);
+                    }
                     
                 }
             }
-            */
-        	e.point.lng +=0.002;
+            
+        	//e.point.lng +=0.002;
+        	//alert(window.getDistancePointTOLine(0,0,1,1,2,2).dis);
             
             overlay.setPositionAt(drawPoint.length - 1, e.point);
         }
