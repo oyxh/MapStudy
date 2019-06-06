@@ -1072,20 +1072,37 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
         var mousemoveAction = function(e) {
             
             var mapOverlays = map.getOverlays();   //地图上的所有覆盖物
-            var minRes=1000000;
+            var stickPixel = 10; ///附着像素
+            var pixelPoint = map.pointToPixel(e.point);
+            pixelPoint.y +=stickPixel; //y轴—+4像素
+            var minRes= Math.abs(map.pixelToPoint(pixelPoint).lat-e.point.lat);
+            //console.log(e.point.lng+" "+e.point.lat)
+            //console.log(map.pixelToPoint(pixelPoint).lng+" "+map.pixelToPoint(pixelPoint).lat);
             var res;
+            var minPointLine={x:e.point.lat,y:e.point.lng,
+					dis:0.0};
             for(i in mapOverlays){
                 if(mapOverlays[i] !=overlay&&mapOverlays[i].isVisible()&&mapOverlays[i].toString()=="[object Polygon]"){
                     
                     var polygonLine = getPolygonLine(mapOverlays[i].getPath(),{S:{ x:0,y:0},E:{ x:0,y:0}});
                     for(j in polygonLine ){
                     	res = window.getDistancePointTOLine(e.point.lat,e.point.lng,polygonLine[j].S.x,polygonLine[j].S.y,polygonLine[j].E.x,polygonLine[j].E.y);
-                    	console.log("polygon"+i+":"+e.point.lng+","+e.point.lat+","+"第"+j+"线段距离："+res.dis);
+                    	if(res.dis <minRes ){
+                    		minRes = res.dis;
+                    		minPointLine = res;
+                    	}
+                    	//console.log("polygon"+i+":"+e.point.lng+","+e.point.lat+","+"第"+j+"线段距离："+res.dis);
                     }
                     
                 }
             }
-            
+            var offsetX = minPointLine.x - e.point.lat;
+            var offsetY = minPointLine.y - e.point.lng;
+            var centerP = map.getCenter();
+            centerP.lat += offsetX;
+            centerP.lng += offsetY;
+            map.panTo(centerP,false)
+            console.log("Point:"+e.point.lng+","+e.point.lat+","+"minPointLine:"+minPointLine.y+","+minPointLine.x);
         	//e.point.lng +=0.002;
         	//alert(window.getDistancePointTOLine(0,0,1,1,2,2).dis);
             
@@ -1107,7 +1124,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
             }
             else if(baidu.ie <= 8){
             }else{
-               // points.pop();
+                points.pop();
             }
             overlay.setPath(points);
             var calculate = me._calculate(overlay, points.pop());

@@ -212,7 +212,7 @@
 				        enableDrawingTool: true, //是否显示工具栏
 				        //drawingMode:BMAP_DRAWING_POLYGON,//绘制模式  多边形
 				        drawingToolOptions: {
-				            anchor: BMAP_ANCHOR_TOP_LEFT, //位置
+				            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
 				            offset: new BMap.Size(20, 5), //偏离值
 				            scale:0.8, //缩放
 				            drawingModes:[
@@ -230,6 +230,10 @@
 				    	this.drawTool.removeEventListener("add");
 						this.drawTool.addEventListener('overlaycomplete', this.overlaycomplete,"add");
 					}    	
+				},
+				
+				generateMyControlTool(){
+					var controlTool = new window.MyControlTool(map);
 				},
 				generateOverlays(){  //新建图层生成图层的覆盖物集合，在overlaysInLayers的上面新增一个放在最前面
 					var overlays=[];
@@ -268,6 +272,7 @@
 				
 					
 					this.generateDrawTool();
+					this.generateMyControlTool();
 					this.stickMouse();
 					
 					

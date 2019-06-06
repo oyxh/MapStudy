@@ -278,28 +278,29 @@
    */
   var getDistancePointTOLine = function(x,y,x1,y1,x2,y2){//x,y为点的位置,矢量法
 	var pointObject={
-		point:[],
+		x:0,
+		y:0,
 		dis:0.0
 	};
 	 var cross = (x2 - x1) * (x - x1) + (y2 - y1) * (y - y1);
 	if (cross <= 0) {
-		pointObject.point.push(x1);
-		pointObject.point.push(y1);
+		pointObject.x=x1;
+		pointObject.y=y1;
 		pointObject.dis = Math.pow((x - x1) * (x - x1) + (y - y1) * (y - y1),0.5);
 		return pointObject;
 	}									  
 	var d2 = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
 	if (cross >= d2){
-		pointObject.point.push(x2);
-		pointObject.point.push(y2);
+		pointObject.x=x2;
+		pointObject.y=y2;
 		pointObject.dis = Math.pow((x - x2) * (x - x2) + (y - y2) * (y - y2),0.5);
 		return pointObject;
 	}				  
 	var r = cross / d2;
 	var px = x1 + (x2 - x1) * r;
 	var py = y1 + (y2 - y1) * r;
-	pointObject.point.push(px);
-	pointObject.point.push(py);
+	pointObject.x=px;
+	pointObject.y=py;
 	pointObject.dis =Math.pow((x - px) * (x - px) + (py - y) * (py - y),0.5);
 	return pointObject;					
 }
