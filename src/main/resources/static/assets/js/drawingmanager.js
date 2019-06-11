@@ -1102,7 +1102,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
             centerP.lat += offsetX;
             centerP.lng += offsetY;
             map.panTo(centerP,false)
-            console.log("Point:"+e.point.lng+","+e.point.lat+","+"minPointLine:"+minPointLine.y+","+minPointLine.x);
+           // console.log("Point:"+e.point.lng+","+e.point.lat+","+"minPointLine:"+minPointLine.y+","+minPointLine.x);
         	//e.point.lng +=0.002;
         	//alert(window.getDistancePointTOLine(0,0,1,1,2,2).dis);
             

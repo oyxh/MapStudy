@@ -2,7 +2,9 @@ package com.oyxh.map.controller;
 
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -78,6 +80,17 @@ public class PrimeController extends BaseController {
 		model.addAttribute("name", getUser().getName());
 		logger.info(getUser().getName());
 		return  "index";
+	}
+	
+	@Log("请求用户")
+	@GetMapping({"/user"})
+	@ResponseBody
+	public Map<String,Object>  getCurrentUser() {
+		// 查询列表数据
+		Map<String,Object> r=new HashMap<String,Object>();
+		logger.info(getUser().getName());
+		r.put("user",getUser().getName() );
+		return r;
 	}
 	
 
