@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oyxh.map.dao.DistrictDao">
+
+	<select id="list" resultType="com.oyxh.map.domain.DistrictDo">
+		select
+		`county_id`,`county_name`
+		from sys_county
+		<where>
+			<if test="countyId != null and countyId != ''"> and county_id = #{countyId} </if>
+			<if test="countyName != null and countyName != ''"> and county_name = #{countyName} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by county_id 
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+
+</mapper>

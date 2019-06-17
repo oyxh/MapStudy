@@ -12,7 +12,6 @@
 					    height:'38px',
                         background:'#D8D8D8',
                         width:'100%',
-                        float:'right',
                         textAlign:'left',
                          lineHeight:'38px',
                         display:'inline-block',

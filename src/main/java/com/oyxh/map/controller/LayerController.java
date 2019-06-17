@@ -29,8 +29,7 @@ public class LayerController {
 	@GetMapping("/addlayer")
 	 @ResponseBody
 	public List<String> AddLayer(String layername) {
-		System.out.println("addlayerok");
-		System.out.println("layername");
+	
 		UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
 		System.out.println("1"+user.toString());
 		System.out.println(user.getName());

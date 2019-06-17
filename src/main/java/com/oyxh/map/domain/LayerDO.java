@@ -12,6 +12,13 @@ public class LayerDO {
 	private String layerName;
 	private String layerData;
 	private long userId;
+	private String layerGround;
+	public String getLayerGround() {
+		return layerGround;
+	}
+	public void setLayerGround(String layerGround) {
+		this.layerGround = layerGround;
+	}
 	public long getLayerId() {
 		return layerId;
 	}
