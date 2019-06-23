@@ -9,20 +9,22 @@
 		`layer_name`,
 		`layer_data`,
 		`user_id`,
-		`layer_ground`
+		`layer_ground`,
+		`layer_ground_data`
 		)
 		values
 		(
 		#{layerName},
 		#{layerData},
 		#{userId},
-		#{layerGround}
+		#{layerGround},
+		#{layerGroundData}
 		)
 	</insert>
 
 	<select id="list" resultType="com.oyxh.map.domain.LayerDO">
 		select
-		`layer_id`,`layer_name`,`layer_data`,`user_id`,`layer_ground`
+		`layer_id`,`layer_name`,`layer_data`,`user_id`,`layer_ground`,`layer_ground_data`
 		from sys_layer
 		<where>
 			<if test="layerId != null and layerId != ''"> and layer_id = #{layerId} </if>

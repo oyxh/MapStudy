@@ -1,31 +1,14 @@
-package com.oyxh.map.domain;
+package com.oyxh.map.common.utils;
 
-/** 
-* @ClassName: LayerDo 
-* @Description: TODO(图层的实体) 
-* @author oyxh
-* @date 2019年5月25日 下午10:18:53 
-*  
-*/
-public class LayerDO {
+import java.util.List;
+
+public class LayerItem {
 	private long layerId;
 	private String layerName;
 	private String layerData;
 	private long userId;
 	private String layerGround;
-	private String layerGroundData;
-	public String getLayerGroundData() {
-		return layerGroundData;
-	}
-	public void setLayerGroundData(String layerGroundData) {
-		this.layerGroundData = layerGroundData;
-	}
-	public String getLayerGround() {
-		return layerGround;
-	}
-	public void setLayerGround(String layerGround) {
-		this.layerGround = layerGround;
-	}
+	private List<Polygon> layerGroundData;
 	public long getLayerId() {
 		return layerId;
 	}
@@ -50,5 +33,18 @@ public class LayerDO {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-	
+	public String getLayerGround() {
+		return layerGround;
+	}
+	public void setLayerGround(String layerGround) {
+		this.layerGround = layerGround;
+	}
+	public List<Polygon> getLayerGroundData() {
+		return layerGroundData;
+	}
+	public void setLayerGroundData(List<Polygon> layerGroundData) {
+		this.layerGroundData = layerGroundData;
+	}
+
+
 }
