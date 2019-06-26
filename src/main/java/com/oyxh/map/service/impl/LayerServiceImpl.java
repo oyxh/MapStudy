@@ -54,13 +54,20 @@ public class LayerServiceImpl implements LayerService {
 	}
 
 
-	/*@Override
+	@Override
 	public int update(LayerDO layer) {
+		// TODO Auto-generated method stub
+		int count = layerMapper.update(layer);
+		return count;
+	}
+
+	@Override
+	public int batchRemove(Long[] layerIds) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	
+	/*
 	@Override
 	public int batchRemove(Long[] layerIds) {
 		// TODO Auto-generated method stub

@@ -21,6 +21,18 @@
 		#{layerGroundData}
 		)
 	</insert>
+	
+	<update id="update" parameterType="com.oyxh.map.domain.LayerDO">
+		update sys_layer
+		<set>
+			<if test="layerName != null">`layer_name` = #{layerName}, </if>
+			<if test="layerData != null">`layer_data` = #{layerData}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="layerGround != null">`layer_ground` = #{layerGround}, </if>
+			<if test="layerGroundData != null">`layer_ground_data` = #{layerGroundData}, </if>
+		</set>
+		where layer_id = #{layerId}
+	</update>
 
 	<select id="list" resultType="com.oyxh.map.domain.LayerDO">
 		select

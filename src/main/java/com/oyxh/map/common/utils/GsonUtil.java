@@ -66,10 +66,12 @@ public class GsonUtil {
         public static <T> List<T> GsonToList(String gsonString, Class<T> cls) {   //修改了的
         	 List<T> list = new ArrayList<>();
              JsonParser parser = new JsonParser();
-             JsonArray jsonarray = parser.parse(gsonString).getAsJsonArray();
-             for (JsonElement element : jsonarray
-                     ) {
-                 list.add(gson.fromJson(element, cls));
+             if(gsonString !=null) {
+	             JsonArray jsonarray = parser.parse(gsonString).getAsJsonArray();
+	             for (JsonElement element : jsonarray
+	                     ) {
+	                 list.add(gson.fromJson(element, cls));
+	             }
              }
              return list;
         }

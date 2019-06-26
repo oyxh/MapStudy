@@ -29,9 +29,9 @@ public interface LayerDao {
 	List<LayerDO> list(Map<String,Object> map);
 	int save(LayerDO layer);
 	int remove(Long layer_id);
-	/*int update(LayerDO layer);
+	int update(LayerDO layer);
 	
 	
-	
+	/*
 	int batchRemove(Long[] layerIds);*/
 }
