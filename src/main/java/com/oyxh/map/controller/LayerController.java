@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.oyxh.map.common.annotation.LayerItemDeserializer;
 import com.oyxh.map.common.annotation.Log;
@@ -84,11 +80,6 @@ public class LayerController {
     @PostMapping(value = "/savelayer")  
 	@ResponseBody
     public R  saveLayer(@RequestBody String json) {  
-		 GsonBuilder gsonBuilder = new GsonBuilder();
-		    gsonBuilder.registerTypeAdapter(LayerDO.class, new LayerItemDeserializer());
-		    Gson gson = gsonBuilder.create();
-		    LayerDO layerItem = gson.fromJson(json, LayerDO.class);
-		    layerService.update(layerItem);
         if (null != layerItem) {  
             // return login4Return(layerItem.getName(), layerItem.getPwd());  
         } else {  
