@@ -29,7 +29,7 @@ public class LayerItemDeserializer implements JsonDeserializer<LayerDO> {
 		 
 		    
 		    final JsonElement jsonlayerData = jsonObject.get("layerData");
-		    final String layerData = jsonlayerData.getAsString();
+		    final String layerData = jsonlayerData.toString();
 		    
 		    UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
 		    final long userId = user.getUserId();

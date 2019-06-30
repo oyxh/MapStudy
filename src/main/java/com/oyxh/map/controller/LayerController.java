@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.oyxh.map.common.annotation.LayerItemDeserializer;
 import com.oyxh.map.common.annotation.Log;
@@ -79,7 +80,12 @@ public class LayerController {
      */  
     @PostMapping(value = "/savelayer")  
 	@ResponseBody
-    public R  saveLayer(@RequestBody String json) {  
+    public R  saveLayer(@RequestBody String json) {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+	    gsonBuilder.registerTypeAdapter(LayerDO.class, new LayerItemDeserializer());
+	    Gson gson = gsonBuilder.create();
+	    LayerDO layerItem = gson.fromJson(json, LayerDO.class);
+	    layerService.update(layerItem);
         if (null != layerItem) {  
             // return login4Return(layerItem.getName(), layerItem.getPwd());  
         } else {  
@@ -107,20 +113,14 @@ public class LayerController {
 		System.out.println(user.getUserId());
 		params.put("userId", user.getUserId());
 		List<LayerDO> layers = layerService.list(params);	
-		List<Map<String,Object>> res = new ArrayList<Map<String,Object>>();
-		
-		String gsonString1 = "[{\"gridName\":\"test1\",\"gridMana\":\"lizhang\",\"gridData\":[{\"lng\":120.15,\"lat\":27.001},{\"lng\":120.8,\"lat\":27.9}]},"
-				+ "{\"gridName\":\"test2\",\"gridMana\":\"lizhang222\",\"gridData\":[{\"lng\":120.15,\"lat\":27.001},{\"lng\":120.8,\"lat\":27.9},{\"lng\":120.6,\"lat\":27.9}]}]";
-		//List<GridZone> stringList1 = gson.fromJson(gsonString1, new TypeToken<List<GridZone>>() {}.getType());
-		System.out.println(gsonString1);
-		List<Polygon> stringList1 = GsonUtil.GsonToList(gsonString1, Polygon.class);
-		System.out.println("stringList1"+stringList1.size());
-		
+		List<Map<String,Object>> res = new ArrayList<Map<String,Object>>();	
 		for(LayerDO layer : layers) {
 			Map<String,Object> layerTo = new HashMap<String,Object>();
 			layerTo.put("layerId", layer.getLayerId());
 			layerTo.put("layerName", layer.getLayerName());
-			layerTo.put("layerData", layer.getLayerData());
+			String gsonString1 = layer.getLayerData();
+			List<Polygon> layerData = GsonUtil.GsonToList(gsonString1, Polygon.class);
+			layerTo.put("layerData", layerData);
 			layerTo.put("userId", layer.getUserId());
 			layerTo.put("layerGround", layer.getLayerGround());
 			System.out.println(layer.getLayerGroundData());
@@ -128,7 +128,7 @@ public class LayerController {
 			System.out.println(gsonString2);
 			List<Polygon> layerGroundData = GsonUtil.GsonToList(gsonString2, Polygon.class);
 			//layerTo.put("layerGroundData", layer.getLayerGroundData());
-			//layerTo.put("layerGroundData", layerGroundData);
+			layerTo.put("layerGroundData", layerGroundData);
 			res.add(layerTo);
 		}
 		return res;
