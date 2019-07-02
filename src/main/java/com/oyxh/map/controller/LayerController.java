@@ -64,7 +64,8 @@ public class LayerController {
 		LayerDO layer=new LayerDO();
 		layer.setLayerName(layerName);
 		layer.setUserId(user.getUserId());
-		layerService.save(layer);
+		int test = layerService.save(layer);
+		System.out.println("test"+test);
 	
 			return R.ok();
 		
