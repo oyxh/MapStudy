@@ -29,7 +29,7 @@ public class LayerItemDeserializer implements JsonDeserializer<LayerDO> {
 		 
 		    
 		    final JsonElement jsonlayerData = jsonObject.get("layerData");
-		    final String layerData = jsonlayerData.toString();
+		    final String layerData = (jsonlayerData == null) ? null : jsonlayerData.toString();
 		    
 		    UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
 		    final long userId = user.getUserId();
@@ -38,7 +38,7 @@ public class LayerItemDeserializer implements JsonDeserializer<LayerDO> {
 		    final String layerGround = jsonlayerGround.getAsString();
 		    
 		    final JsonElement jsonlayerGroundData = jsonObject.get("layerGroundData");
-		    final String layerGroundData = jsonlayerGroundData.toString();
+		    final String layerGroundData = (jsonlayerGroundData == null) ? null : jsonlayerGroundData.toString();
 		 
 		    final LayerDO layerItem = new LayerDO();
 		    layerItem.setLayerData(layerData);;

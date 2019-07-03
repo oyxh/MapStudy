@@ -57,17 +57,15 @@ public class LayerController {
 	@PostMapping("/addlayer")
 	@ResponseBody
 	R ajaxLogin(String layerName) {
-		
-		System.out.println(layerName);
 		UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
-		System.out.println(user.getName());
 		LayerDO layer=new LayerDO();
 		layer.setLayerName(layerName);
 		layer.setUserId(user.getUserId());
 		int test = layerService.save(layer);
 		System.out.println("test"+test);
+		System.out.println(layer.getLayerId());
 	
-			return R.ok();
+			return R.ok(layer.getLayerId());
 		
 	}
 	

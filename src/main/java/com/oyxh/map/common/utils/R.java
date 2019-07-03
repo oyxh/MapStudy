@@ -54,4 +54,10 @@ public class R extends HashMap<String, Object> {
 		System.out.println(value);
 		return this;
 	}
+
+	public static R ok(long msg) {
+		R r = new R();
+		r.put("msg", msg);
+		return r;
+	}
 }
