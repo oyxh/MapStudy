@@ -38,19 +38,6 @@ public class LayerController {
 	 @Autowired
 	  private LayerService layerService;
 
-	@GetMapping("/addlayer")
-	 @ResponseBody
-	public List<String> AddLayer(String layername) {
-	
-		UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
-		System.out.println("1"+user.toString());
-		System.out.println(user.getName());
-		System.out.println(user.getUsername());
-		List<String> r = new ArrayList();
-		r.add("user");
-		return r;
-		
-	}
 	
 	
 	@Log("增加图层")
@@ -117,17 +104,18 @@ public class LayerController {
 			Map<String,Object> layerTo = new HashMap<String,Object>();
 			layerTo.put("layerId", layer.getLayerId());
 			layerTo.put("layerName", layer.getLayerName());
-			String gsonString1 = layer.getLayerData();
+			/*String gsonString1 = layer.getLayerData();
 			List<Polygon> layerData = GsonUtil.GsonToList(gsonString1, Polygon.class);
-			layerTo.put("layerData", layerData);
+			layerTo.put("layerData", layerData);*/
 			layerTo.put("userId", layer.getUserId());
-			layerTo.put("layerGround", layer.getLayerGround());
+			layerTo.put("layerDes", layer.getLayerDes());
+			/*layerTo.put("layerGround", layer.getLayerGround());
 			System.out.println(layer.getLayerGroundData());
 			String gsonString2 = layer.getLayerGroundData();
 			System.out.println(gsonString2);
 			List<Polygon> layerGroundData = GsonUtil.GsonToList(gsonString2, Polygon.class);
 			//layerTo.put("layerGroundData", layer.getLayerGroundData());
-			layerTo.put("layerGroundData", layerGroundData);
+			layerTo.put("layerGroundData", layerGroundData);*/
 			res.add(layerTo);
 		}
 		return res;

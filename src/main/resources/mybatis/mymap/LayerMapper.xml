@@ -7,18 +7,14 @@
 		insert into sys_layer
 		(
 		`layer_name`,
-		`layer_data`,
 		`user_id`,
-		`layer_ground`,
-		`layer_ground_data`
+		`layer_des`
 		)
 		values
 		(
 		#{layerName},
-		#{layerData},
 		#{userId},
-		#{layerGround},
-		#{layerGroundData}
+		#{layerDes}
 		)
 	</insert>
 	
@@ -26,22 +22,21 @@
 		update sys_layer
 		<set>
 			<if test="layerName != null">`layer_name` = #{layerName}, </if>
-			<if test="layerData != null">`layer_data` = #{layerData}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>
-			<if test="layerGround != null">`layer_ground` = #{layerGround}, </if>
-			<if test="layerGroundData != null">`layer_ground_data` = #{layerGroundData}, </if>
+			<if test="layerDes != null">`layer_des` = #{layer_des}, </if>
 		</set>
 		where layer_id = #{layerId}
 	</update>
 
 	<select id="list" resultType="com.oyxh.map.domain.LayerDO">
 		select
-		`layer_id`,`layer_name`,`layer_data`,`user_id`,`layer_ground`,`layer_ground_data`
+		`layer_id`,`layer_name`,`user_id`,`layer_des`
 		from sys_layer
 		<where>
 			<if test="layerId != null and layerId != ''"> and layer_id = #{layerId} </if>
 			<if test="layerName != null and layerName != ''"> and layer_name = #{layerName} </if>
 			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+			<if test="layerDes != null and layerDes != ''"> and layer_des = #{layer_des} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">

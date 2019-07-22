@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oyxh.map.dao.GeometryDao">
+	<insert id="save" parameterType="com.oyxh.map.domain.GeometryDO"
+		useGeneratedKeys="true" keyProperty="geometryId">
+		insert into sys_geometry
+		(
+		`geometry_name`,
+		`user_id`,
+		`geometry_des`
+		)
+		values
+		(
+		#{geometryName},
+		#{userId},
+		#{geometryDes}
+		)
+	</insert>
+	
+	<update id="update" parameterType="com.oyxh.map.domain.GeometryDO">
+		update sys_geometry
+		<set>
+			<if test="geometryName != null">`geometry_name` = #{geometryName}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="geometryDes != null">`geometry_des` = #{geometry_des}, </if>
+		</set>
+		where geometry_id = #{geometryId}
+	</update>
+
+	<select id="list" resultType="com.oyxh.map.domain.GeometryDO">
+		select
+		`geometry_id`,`geometry_name`,`is_background`,`geometry_des`,`geometry_class`,`layer_id`,`user_id`,`geometry_data`
+		from sys_geometry
+		<where>
+			<if test="geometryId != null and geometryId != ''"> and geometry_id = #{geometryId} </if>
+			<if test="geometryName != null and geometryName != ''"> and geometry_name = #{geometryName} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+			<if test="geometryDes != null and geometryDes != ''"> and geometry_des = #{geometry_des} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by geometry_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <delete id="remove">
+		delete from sys_geometry where geometry_id = #{value}
+	</delete>
+
+</mapper>

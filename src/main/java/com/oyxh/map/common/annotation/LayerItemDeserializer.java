@@ -28,22 +28,24 @@ public class LayerItemDeserializer implements JsonDeserializer<LayerDO> {
 		    final String layerName = jsonlayerName.getAsString();
 		 
 		    
-		    final JsonElement jsonlayerData = jsonObject.get("layerData");
-		    final String layerData = (jsonlayerData == null) ? null : jsonlayerData.toString();
+		/*    final JsonElement jsonlayerData = jsonObject.get("layerData");
+		   // final String layerData = "";
+		    final String layerData = (jsonlayerData == null) ? null : jsonlayerData.toString();*/
 		    
 		    UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
 		    final long userId = user.getUserId();
 		    
-		    final JsonElement jsonlayerGround = jsonObject.get("layerGround");
+		  /*  final JsonElement jsonlayerGround = jsonObject.get("layerGround");
 		    final String layerGround = jsonlayerGround.getAsString();
 		    
 		    final JsonElement jsonlayerGroundData = jsonObject.get("layerGroundData");
-		    final String layerGroundData = (jsonlayerGroundData == null) ? null : jsonlayerGroundData.toString();
+		    //final String layerGroundData = "";
+		    final String layerGroundData = (jsonlayerGroundData == null) ? null : jsonlayerGroundData.toString();*/
 		 
 		    final LayerDO layerItem = new LayerDO();
-		    layerItem.setLayerData(layerData);;
-		    layerItem.setLayerGround(layerGround);;
-		    layerItem.setLayerGroundData(layerGroundData);;
+/*		    layerItem.setLayerData(layerData);
+		    layerItem.setLayerGround(layerGround);
+		    layerItem.setLayerGroundData(layerGroundData);*/
 		    layerItem.setLayerId(layerId);
 		    layerItem.setLayerName(layerName);
 		    layerItem.setUserId(userId);

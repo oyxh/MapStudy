@@ -10,22 +10,8 @@ package com.oyxh.map.domain;
 public class LayerDO {
 	private long layerId;
 	private String layerName;
-	private String layerData;
 	private long userId;
-	private String layerGround;
-	private String layerGroundData;
-	public String getLayerGroundData() {
-		return layerGroundData;
-	}
-	public void setLayerGroundData(String layerGroundData) {
-		this.layerGroundData = layerGroundData;
-	}
-	public String getLayerGround() {
-		return layerGround;
-	}
-	public void setLayerGround(String layerGround) {
-		this.layerGround = layerGround;
-	}
+	private String layerDes;
 	public long getLayerId() {
 		return layerId;
 	}
@@ -38,17 +24,18 @@ public class LayerDO {
 	public void setLayerName(String layerName) {
 		this.layerName = layerName;
 	}
-	public String getLayerData() {
-		return layerData;
-	}
-	public void setLayerData(String layerData) {
-		this.layerData = layerData;
-	}
 	public long getUserId() {
 		return userId;
 	}
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
+	public String getLayerDes() {
+		return layerDes;
+	}
+	public void setLayerDes(String layerDes) {
+		this.layerDes = layerDes;
+	}
+	
 	
 }
