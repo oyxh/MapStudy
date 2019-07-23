@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.oyxh.map.common.utils.GsonUtil;
+import com.oyxh.map.common.utils.Point;
 import com.oyxh.map.common.utils.Polygon;
 import com.oyxh.map.domain.GeometryDO;
 import com.oyxh.map.domain.UserDO;
@@ -52,12 +53,10 @@ public class GeometryController {
 			geometryTo.put("geometryClass", geometry.getGeometryClass());
 			geometryTo.put("layerId", geometry.getLayerId());
 			geometryTo.put("isbackground", geometry.getIsBackground());
-			System.out.println(geometry.getGeometryData());
 			String gsonString2 = geometry.getGeometryData();
-			System.out.println(gsonString2);
-			// List<Polygon> geometryData = GsonUtil.GsonToList(gsonString2, Polygon.class);
+			List<Point> geometryData = GsonUtil.GsonToList(gsonString2, Point.class);
 			//GeometryTo.put("GeometryGroundData", Geometry.getGeometryGroundData());
-			geometryTo.put("geometryData", gsonString2);
+			geometryTo.put("geometryData", geometryData);
 			res.add(geometryTo);
 		}
 		return res;
