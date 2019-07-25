@@ -48,12 +48,13 @@ public class GeometryController {
 			/*String gsonString1 = Geometry.getGeometryData();
 			List<Polygon> GeometryData = GsonUtil.GsonToList(gsonString1, Polygon.class);
 			GeometryTo.put("GeometryData", GeometryData);*/
-			geometryTo.put("userId", geometry.getLayerId());
+			geometryTo.put("userId", geometry.getUserId());
 			geometryTo.put("geometryDes", geometry.getGeometryDes());
 			geometryTo.put("geometryClass", geometry.getGeometryClass());
 			geometryTo.put("layerId", geometry.getLayerId());
 			geometryTo.put("isbackground", geometry.getIsBackground());
 			String gsonString2 = geometry.getGeometryData();
+			//System.out.println(gsonString2);
 			List<Point> geometryData = GsonUtil.GsonToList(gsonString2, Point.class);
 			//GeometryTo.put("GeometryGroundData", Geometry.getGeometryGroundData());
 			geometryTo.put("geometryData", geometryData);

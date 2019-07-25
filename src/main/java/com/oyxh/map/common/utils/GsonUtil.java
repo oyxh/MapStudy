@@ -70,7 +70,7 @@ public class GsonUtil {
             	 JsonElement jsonElement= parser.parse(gsonString);
             	 if(jsonElement instanceof JsonArray) {
             		 JsonArray jsonarray = jsonElement.getAsJsonArray();
-    	             for (JsonElement element : jsonarray) {
+    	             for (JsonElement element : jsonarray) {  	           
     	                 list.add(gson.fromJson(element, cls));
     	             }
             	 }
