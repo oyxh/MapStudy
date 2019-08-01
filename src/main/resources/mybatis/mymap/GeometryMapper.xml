@@ -54,5 +54,13 @@
     <delete id="remove">
 		delete from sys_geometry where geometry_id = #{value}
 	</delete>
+	
+	<delete id="batchRemove">
+		delete from sys_geometry where geometry_id in
+		<foreach item="geometryId" collection="array" open="(" separator=","
+			close=")">
+			#{geometryId}
+		</foreach>
+	</delete>
 
 </mapper>

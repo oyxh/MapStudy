@@ -9,11 +9,14 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.oyxh.map.common.annotation.Log;
 import com.oyxh.map.common.utils.GsonUtil;
 import com.oyxh.map.common.utils.Point;
-import com.oyxh.map.common.utils.Polygon;
+import com.oyxh.map.common.utils.R;
 import com.oyxh.map.domain.GeometryDO;
 import com.oyxh.map.domain.UserDO;
 import com.oyxh.map.service.GeometryService;
@@ -61,6 +64,23 @@ public class GeometryController {
 			res.add(geometryTo);
 		}
 		return res;
+	}
+	
+	@Log("删除geometry")
+	@PostMapping("/removegeometrys")
+	@ResponseBody()
+	R deleteGeometrys(@RequestBody String json) {
+		System.out.println("delete layer");
+		System.out.println(json);
+		List<Long> geometryIds = GsonUtil.GsonToList(json, Long.class);
+		Long [] setToArray = new Long[geometryIds.size()];  
+        setToArray = geometryIds.toArray(setToArray) ;  
+		System.out.println("delete layer"+setToArray.length);
+		if (geometryService.batchRemove(setToArray) > 0) {
+			return R.ok();
+		} else {
+			return R.error(1, "删除失败");
+		}
 	}
 
 }

@@ -61,8 +61,8 @@ public class GeometryServiceImpl implements GeometryService {
 
 	@Override
 	public int batchRemove(Long[] geometryIds) {
-		// TODO Auto-generated method stub
-		return 0;
+		int r = geometryMapper.batchRemove(geometryIds);
+		return r;
 	}
 
 
