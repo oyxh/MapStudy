@@ -65,6 +65,12 @@ public class GeometryServiceImpl implements GeometryService {
 		return r;
 	}
 
+	@Override
+	public int batchUpdate(List<GeometryDO> Geometrys) {
+		int r = geometryMapper.batchUpdate(Geometrys);
+		return r;
+	}
+
 
 	/*
 	@Override

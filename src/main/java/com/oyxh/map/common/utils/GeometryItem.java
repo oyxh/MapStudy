@@ -1,16 +1,14 @@
-package com.oyxh.map.domain;
+package com.oyxh.map.common.utils;
 
 import java.util.List;
 
-import com.oyxh.map.common.utils.Point;
-
-public class GeometryDO {
+public class GeometryItem {
 	private long geometryId;
 	private String geometryName;
 	private long layerId;
 	private long userId;
 	private String geometryDes;
-	private String geometryData;
+	private List<Point> geometryData;
 	private String geometryClass;
 	private String isBackground;
 	public long getGeometryId() {
@@ -31,6 +29,12 @@ public class GeometryDO {
 	public void setLayerId(long layerId) {
 		this.layerId = layerId;
 	}
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 	public String getGeometryDes() {
 		return geometryDes;
 	}
@@ -38,10 +42,10 @@ public class GeometryDO {
 		this.geometryDes = geometryDes;
 	}
 
-	public String getGeometryData() {
+	public List<Point> getGeometryData() {
 		return geometryData;
 	}
-	public void setGeometryData(String geometryData) {
+	public void setGeometryData(List<Point> geometryData) {
 		this.geometryData = geometryData;
 	}
 	public String getGeometryClass() {
@@ -56,11 +60,4 @@ public class GeometryDO {
 	public void setIsBackground(String isBackground) {
 		this.isBackground = isBackground;
 	}
-	public long getUserId() {
-		return userId;
-	}
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-	
 }

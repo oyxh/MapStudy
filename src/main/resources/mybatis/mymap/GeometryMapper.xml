@@ -17,7 +17,7 @@
 		#{geometryDes}
 		)
 	</insert>
-	
+		
 	<update id="update" parameterType="com.oyxh.map.domain.GeometryDO">
 		update sys_geometry
 		<set>
@@ -27,7 +27,60 @@
 		</set>
 		where geometry_id = #{geometryId}
 	</update>
-
+	
+	<update id="batchUpdate" parameterType="com.oyxh.map.domain.GeometryDO">
+        update sys_geometry
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="geometry_name =case" suffix="end,">
+                 <foreach collection="list" item="item" index="index">
+                     <if test="item.geometryName !=null ">
+                         when geometry_id=#{item.geometryId} then #{item.geometryName}
+                     </if>
+                     <if test="item.geometryName == null ">
+                         when geometry_id=#{item.geometryId} then sys_geometry.geometryName  
+                     </if>
+                 </foreach>
+            </trim>
+            <trim prefix="geometry_des =case" suffix="end,">
+                 <foreach collection="list" item="item" index="index">
+                     <if test="item.geometryDes !=null ">
+                         when geometry_id=#{item.geometryId} then #{item.geometryDes}
+                     </if>
+                     <if test="item.geometryDes == null ">
+                         when geometry_id=#{item.geometryId} then sys_geometry.geometry_des
+                     </if>
+                 </foreach>
+            </trim>
+             <trim prefix="geometry_data =case" suffix="end,">
+                 <foreach collection="list" item="item" index="index">
+                     <if test="item.geometryData  !=null ">
+                         when geometry_id=#{item.geometryId} then #{item.geometryData}
+                     </if>
+                     <if test="item.geometryData  == null ">
+                         when geometry_id=#{item.geometryId} then sys_geometry.geometry_data
+                     </if>
+                 </foreach>
+            </trim>
+        </trim>
+        where geometry_id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.geometryId,jdbcType=BIGINT}
+        </foreach>
+	</update>
+	
+	<resultMap id="geometryResultMap" type="com.oyxh.map.domain.GeometryDO">
+	    <id column="geometry_id" jdbcType="BIGINT" property="geometryId" />
+	    <result column="geometry_name" jdbcType="VARCHAR" property="geometryName" />
+	    <result column="is_background" jdbcType="VARCHAR" property="isBackground" />
+	    <result column="geometry_des" jdbcType="VARCHAR" property="geometryDes" />
+	    <result column="geometry_class" jdbcType="VARCHAR" property="geometryClass" />
+	    <result column="layer_id" jdbcType="BIGINT" property="layerId" />
+	    <result column="user_id" jdbcType="BIGINT" property="userId" />
+	    <collection property="geometryData" ofType="com.oyxh.map.common.utils.Point" > 
+	        <result column="lng" jdbcType="VARCHAR" property="lng" />
+	         <result column="lat" jdbcType="VARCHAR" property="lat" />
+	    </collection>
+	</resultMap>
 	<select id="list" resultType="com.oyxh.map.domain.GeometryDO">
 		select
 		`geometry_id`,`geometry_name`,`is_background`,`geometry_des`,`geometry_class`,`layer_id`,`user_id`,`geometry_data`
@@ -54,6 +107,8 @@
     <delete id="remove">
 		delete from sys_geometry where geometry_id = #{value}
 	</delete>
+	
+	
 	
 	<delete id="batchRemove">
 		delete from sys_geometry where geometry_id in

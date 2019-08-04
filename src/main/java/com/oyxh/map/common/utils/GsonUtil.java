@@ -26,6 +26,10 @@ public class GsonUtil {
 
         private GsonUtil() {
         }
+        
+        public static void setGson(Gson gson) {
+        	GsonUtil.gson = gson;
+        }
 
         /**
          * 转成json
