@@ -26,5 +26,7 @@ public interface GeometryService {
 	
 	int batchRemove(Long[] geometryIds);
 	int batchUpdate(List<GeometryDO> Geometrys);
+	
+	int removelayer(long layerId);
 
 }

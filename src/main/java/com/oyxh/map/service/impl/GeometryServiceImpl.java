@@ -71,6 +71,14 @@ public class GeometryServiceImpl implements GeometryService {
 		return r;
 	}
 
+	@Override
+	public int removelayer(long layerId) {
+		System.out.println(layerId);
+		int r = geometryMapper.removelayer(layerId);
+		System.out.println(r);
+		return r;
+	}
+
 
 	/*
 	@Override

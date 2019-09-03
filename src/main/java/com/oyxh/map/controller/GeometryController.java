@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
@@ -85,6 +86,21 @@ public class GeometryController {
 			return R.error(1, "删除失败");
 		}
 	}
+	
+	@Log("删除图层中的geometrys")
+	@PostMapping("/removelayer/geometrys")
+	@ResponseBody()
+	R delete(@RequestParam(value="id",defaultValue="0") Long id) {
+		System.out.println("delete layer geometrys"+id.toString());
+		int r = geometryService.removelayer(id);
+		System.out.println("r:" + r);
+		if (r >= 0) {
+			return R.ok();
+		} else {
+			return R.error(1, "删除失败");
+		}
+	}
+	
 	
 	@Log("批量更新geometry")
 	@PostMapping("/editgeometrys")

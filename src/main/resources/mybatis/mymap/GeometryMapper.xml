@@ -108,6 +108,9 @@
 		delete from sys_geometry where geometry_id = #{value}
 	</delete>
 	
+	 <delete id="removelayer">
+		delete from sys_geometry where layer_id = #{value}
+	</delete>
 	
 	
 	<delete id="batchRemove">

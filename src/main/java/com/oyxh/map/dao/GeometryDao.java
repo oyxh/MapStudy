@@ -36,4 +36,5 @@ public interface GeometryDao {
 	int batchRemove(Long[] GeometryIds);
 	
 	int batchUpdate(List<GeometryDO> Geometrys);
+	int removelayer(long layerId);
 }

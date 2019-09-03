@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -124,7 +125,7 @@ public class LayerController {
 	@Log("删除图层")
 	@PostMapping("/removelayer")
 	@ResponseBody()
-	R delete(Long id) {
+	R delete(@RequestParam(value="id",defaultValue="0") Long id) {
 		System.out.println("delete layer"+id.toString());
 		if (layerService.remove(id) > 0) {
 			return R.ok();
