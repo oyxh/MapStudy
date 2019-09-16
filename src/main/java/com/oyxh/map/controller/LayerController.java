@@ -68,6 +68,7 @@ public class LayerController {
     @PostMapping(value = "/savelayer")  
 	@ResponseBody
     public R  saveLayer(@RequestBody String json) {
+		System.out.println(json);
 		GsonBuilder gsonBuilder = new GsonBuilder();
 	    gsonBuilder.registerTypeAdapter(LayerDO.class, new LayerItemDeserializer());
 	    Gson gson = gsonBuilder.create();
@@ -110,6 +111,11 @@ public class LayerController {
 			layerTo.put("layerData", layerData);*/
 			layerTo.put("userId", layer.getUserId());
 			layerTo.put("layerDes", layer.getLayerDes());
+			String gsonString2 = layer.getLayerData();
+			System.out.println(gsonString2);
+			List<String> layerData = GsonUtil.GsonToList(gsonString2, String.class);
+			System.out.println(layerData.toString());
+			layerTo.put("layerData", layerData);
 			/*layerTo.put("layerGround", layer.getLayerGround());
 			System.out.println(layer.getLayerGroundData());
 			String gsonString2 = layer.getLayerGroundData();

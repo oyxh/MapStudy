@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 
 import org.apache.shiro.SecurityUtils;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -37,15 +38,18 @@ public class LayerItemDeserializer implements JsonDeserializer<LayerDO> {
 		    
 		  /*  final JsonElement jsonlayerGround = jsonObject.get("layerGround");
 		    final String layerGround = jsonlayerGround.getAsString();
-		    
-		    final JsonElement jsonlayerGroundData = jsonObject.get("layerGroundData");
-		    //final String layerGroundData = "";
-		    final String layerGroundData = (jsonlayerGroundData == null) ? null : jsonlayerGroundData.toString();*/
+		    */
+		    final JsonElement jsonlayerData = jsonObject.get("layerData");
+		    final String layerData = (jsonlayerData == null) ? null : jsonlayerData.toString();
+		    System.out.println(layerData);
+		    // final String layerGroundData = (jsonlayerGroundData == null) ? null : jsonlayerGroundData.toString();
+		   // System.out.println(jsonlayerGroundData);
 		 
 		    final LayerDO layerItem = new LayerDO();
 /*		    layerItem.setLayerData(layerData);
 		    layerItem.setLayerGround(layerGround);
 		    layerItem.setLayerGroundData(layerGroundData);*/
+		    layerItem.setLayerData(layerData);
 		    layerItem.setLayerId(layerId);
 		    layerItem.setLayerName(layerName);
 		    layerItem.setUserId(userId);

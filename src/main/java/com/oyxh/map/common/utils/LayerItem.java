@@ -7,8 +7,14 @@ public class LayerItem {
 	private String layerName;
 	private String layerData;
 	private long userId;
-	private String layerGround;
-	private List<Polygon> layerGroundData;
+	private String layerDes;
+	
+	public String getLayerDes() {
+		return layerDes;
+	}
+	public void setLayerDes(String layerDes) {
+		this.layerDes = layerDes;
+	}
 	public long getLayerId() {
 		return layerId;
 	}
@@ -33,18 +39,5 @@ public class LayerItem {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-	public String getLayerGround() {
-		return layerGround;
-	}
-	public void setLayerGround(String layerGround) {
-		this.layerGround = layerGround;
-	}
-	public List<Polygon> getLayerGroundData() {
-		return layerGroundData;
-	}
-	public void setLayerGroundData(List<Polygon> layerGroundData) {
-		this.layerGroundData = layerGroundData;
-	}
-
 
 }

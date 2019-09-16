@@ -10,6 +10,7 @@ package com.oyxh.map.domain;
 public class LayerDO {
 	private long layerId;
 	private String layerName;
+	private String layerData;
 	private long userId;
 	private String layerDes;
 	public long getLayerId() {
@@ -20,6 +21,12 @@ public class LayerDO {
 	}
 	public String getLayerName() {
 		return layerName;
+	}
+	public String getLayerData() {
+		return layerData;
+	}
+	public void setLayerData(String layerData) {
+		this.layerData = layerData;
 	}
 	public void setLayerName(String layerName) {
 		this.layerName = layerName;

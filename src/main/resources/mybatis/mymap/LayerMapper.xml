@@ -23,20 +23,22 @@
 		<set>
 			<if test="layerName != null">`layer_name` = #{layerName}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>
-			<if test="layerDes != null">`layer_des` = #{layer_des}, </if>
+			<if test="layerDes != null">`layer_des` = #{layerDes}, </if>
+			<if test="layerData != null">`layer_data` = #{layerData}, </if>
 		</set>
 		where layer_id = #{layerId}
 	</update>
 
 	<select id="list" resultType="com.oyxh.map.domain.LayerDO">
 		select
-		`layer_id`,`layer_name`,`user_id`,`layer_des`
+		`layer_id`,`layer_name`,`user_id`,`layer_des`,`layer_data`
 		from sys_layer
 		<where>
 			<if test="layerId != null and layerId != ''"> and layer_id = #{layerId} </if>
 			<if test="layerName != null and layerName != ''"> and layer_name = #{layerName} </if>
 			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
-			<if test="layerDes != null and layerDes != ''"> and layer_des = #{layer_des} </if>
+			<if test="layerDes != null and layerDes != ''"> and layer_des = #{layerDes} </if>
+			<if test="layerData != null and layerData != ''"> and layer_des = #{layerData} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
