@@ -122,5 +122,26 @@ public class GeometryController {
 		}
 		
 	}
+	
+	@Log("批量增加geometry")
+	@PostMapping("/addgeometrys")
+	@ResponseBody()
+	R addGeometrys(@RequestBody String json) {
+		System.out.println("test" + json);
+		GsonBuilder gsonBuilder = new GsonBuilder();
+	    gsonBuilder.registerTypeAdapter(GeometryDO.class, new GeometryDeserializer());
+	    Gson gson = gsonBuilder.create();
+	    GsonUtil.setGson(gson);
+		List<GeometryDO> geometrys = GsonUtil.GsonToList(json, GeometryDO.class);
+		if(geometrys.size() == 0) {
+	        	return R.ok();
+	    }
+		if (geometryService.batchUpdate(geometrys) > 0) {
+			return R.ok();
+		} else {
+			return R.error(1, "删除失败");
+		}
+		
+	}
 
 }

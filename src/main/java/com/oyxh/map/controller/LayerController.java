@@ -68,7 +68,6 @@ public class LayerController {
     @PostMapping(value = "/savelayer")  
 	@ResponseBody
     public R  saveLayer(@RequestBody String json) {
-		System.out.println(json);
 		GsonBuilder gsonBuilder = new GsonBuilder();
 	    gsonBuilder.registerTypeAdapter(LayerDO.class, new LayerItemDeserializer());
 	    Gson gson = gsonBuilder.create();
