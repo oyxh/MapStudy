@@ -28,6 +28,21 @@
 		where geometry_id = #{geometryId}
 	</update>
 	
+	<insert id="batchAdd" parameterType="com.oyxh.map.domain.GeometryDO"
+		useGeneratedKeys="true" keyProperty="geometryId">
+		insert into sys_geometry
+          (`geometry_name`,`is_background`,`user_id`,`geometry_des`,`geometry_class`,`layer_id`,`geometry_data`)
+            values
+            <foreach collection ="list" item="item" index= "index" separator =",">
+               (
+                 #{item.geometryName}, #{item.isBackground},
+                 #{item.userId},
+                 #{item.geometryDes}, #{item.geometryClass},
+                 #{item.layerId}, #{item.geometryData}
+               )
+           </foreach >
+	</insert>
+	
 	<update id="batchUpdate" parameterType="com.oyxh.map.domain.GeometryDO">
         update sys_geometry
         <trim prefix="set" suffixOverrides=",">

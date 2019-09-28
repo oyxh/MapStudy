@@ -1,6 +1,7 @@
 package com.oyxh.map.common.utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class R extends HashMap<String, Object> {
@@ -56,6 +57,11 @@ public class R extends HashMap<String, Object> {
 	}
 
 	public static R ok(long msg) {
+		R r = new R();
+		r.put("msg", msg);
+		return r;
+	}
+	public static <T> R ok(List<T> msg) {
 		R r = new R();
 		r.put("msg", msg);
 		return r;

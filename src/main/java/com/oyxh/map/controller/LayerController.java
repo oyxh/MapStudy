@@ -49,9 +49,7 @@ public class LayerController {
 		LayerDO layer=new LayerDO();
 		layer.setLayerName(layerName);
 		layer.setUserId(user.getUserId());
-		int test = layerService.save(layer);
-		System.out.println("test"+test);
-		System.out.println(layer.getLayerId());
+		layerService.save(layer);
 	
 			return R.ok(layer.getLayerId());
 		
@@ -97,7 +95,6 @@ public class LayerController {
 	List<Map<String, Object>> list() {
 		Map<String, Object> params = new HashMap<>();
 		UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
-		System.out.println(user.getUserId());
 		params.put("userId", user.getUserId());
 		List<LayerDO> layers = layerService.list(params);	
 		List<Map<String,Object>> res = new ArrayList<Map<String,Object>>();	
@@ -111,9 +108,7 @@ public class LayerController {
 			layerTo.put("userId", layer.getUserId());
 			layerTo.put("layerDes", layer.getLayerDes());
 			String gsonString2 = layer.getLayerData();
-			System.out.println(gsonString2);
 			List<String> layerData = GsonUtil.GsonToList(gsonString2, String.class);
-			System.out.println(layerData.toString());
 			layerTo.put("layerData", layerData);
 			/*layerTo.put("layerGround", layer.getLayerGround());
 			System.out.println(layer.getLayerGroundData());

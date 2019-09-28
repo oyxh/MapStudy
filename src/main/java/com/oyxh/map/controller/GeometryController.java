@@ -62,9 +62,9 @@ public class GeometryController {
 			geometryTo.put("layerId", geometry.getLayerId());
 			geometryTo.put("isbackground", geometry.getIsBackground());
 			String gsonString2 = geometry.getGeometryData();
-			List<Point> geometryData = GsonUtil.GsonToList(gsonString2, Point.class);
+			// List<String> geometryData = GsonUtil.GsonToList(gsonString2, Point.class);
 			//GeometryTo.put("GeometryGroundData", Geometry.getGeometryGroundData());
-			geometryTo.put("geometryData", geometryData);
+			geometryTo.put("geometryData", gsonString2);
 			res.add(geometryTo);
 		}
 		return res;
@@ -106,7 +106,6 @@ public class GeometryController {
 	@PostMapping("/editgeometrys")
 	@ResponseBody()
 	R editGeometrys(@RequestBody String json) {
-		System.out.println(json);
 		GsonBuilder gsonBuilder = new GsonBuilder();
 	    gsonBuilder.registerTypeAdapter(GeometryDO.class, new GeometryDeserializer());
 	    Gson gson = gsonBuilder.create();
@@ -136,10 +135,14 @@ public class GeometryController {
 		if(geometrys.size() == 0) {
 	        	return R.ok();
 	    }
-		if (geometryService.batchUpdate(geometrys) > 0) {
-			return R.ok();
+		if (geometryService.batchAdd(geometrys) > 0) {
+			List<Long> batchid = new ArrayList<Long>();
+			for(GeometryDO geometry:geometrys) {
+				batchid.add(geometry.getGeometryId());
+			}
+			return R.ok(batchid);
 		} else {
-			return R.error(1, "删除失败");
+			return R.error(1, "添加失败");
 		}
 		
 	}

@@ -41,7 +41,7 @@ public class LayerItemDeserializer implements JsonDeserializer<LayerDO> {
 		    */
 		    final JsonElement jsonlayerData = jsonObject.get("layerData");
 		    final String layerData = (jsonlayerData == null) ? null : jsonlayerData.toString();
-		    System.out.println(layerData);
+
 		    // final String layerGroundData = (jsonlayerGroundData == null) ? null : jsonlayerGroundData.toString();
 		   // System.out.println(jsonlayerGroundData);
 		 

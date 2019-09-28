@@ -73,9 +73,14 @@ public class GeometryServiceImpl implements GeometryService {
 
 	@Override
 	public int removelayer(long layerId) {
-		System.out.println(layerId);
 		int r = geometryMapper.removelayer(layerId);
-		System.out.println(r);
+		return r;
+	}
+
+	@Override
+	public int batchAdd(List<GeometryDO> geometrys) {
+		// TODO Auto-generated method stub
+		int r = geometryMapper.batchAdd(geometrys);
 		return r;
 	}
 
