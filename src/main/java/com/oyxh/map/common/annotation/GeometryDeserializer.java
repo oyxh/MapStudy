@@ -39,16 +39,16 @@ public class GeometryDeserializer implements JsonDeserializer<GeometryDO> {
 		    final long layerId = jsonlayerId.getAsLong();
 		    
 		    final JsonElement jsongeometryDes = jsonObject.get("geometryDes");
-		    final String geometryDes = (jsongeometryDes==null) ? null:jsongeometryDes.getAsString();
+		    final String geometryDes = (jsongeometryDes==null)||jsongeometryDes.toString().equals("null") ? null:jsongeometryDes.getAsString();
 		    
 		    final JsonElement jsongeometryClass = jsonObject.get("geometryClass");
-		    final String geometryClass = (jsongeometryClass==null) ? null:jsongeometryClass.getAsString();
+		    final String geometryClass =(jsongeometryClass==null)||(jsongeometryClass.toString().equals("null")) ? null:jsongeometryClass.getAsString();
 		    
 		    final JsonElement jsonisBackground = jsonObject.get("isbackground");
-		    final String isBackground = (jsonisBackground==null) ? null:jsonisBackground.getAsString();
+		    final String isBackground = (jsonisBackground==null)||jsonisBackground.toString().equals("null") ? null:jsonisBackground.getAsString();
 		    
 		    final JsonElement jsongeometryData = jsonObject.get("geometryData");
-		    final JsonArray geometryData = (jsongeometryData == null) ? null : jsongeometryData.getAsJsonArray();
+		    final JsonArray geometryData = (jsongeometryData == null)||jsongeometryData.toString().equals("null")  ? null : jsongeometryData.getAsJsonArray();
 		     List<String> geometryDataString = new ArrayList<String>();
 		    for (JsonElement element : geometryData) {
 		    	String elementStr = "";

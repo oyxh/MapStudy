@@ -62,9 +62,10 @@ public class GeometryController {
 			geometryTo.put("layerId", geometry.getLayerId());
 			geometryTo.put("isbackground", geometry.getIsBackground());
 			String gsonString2 = geometry.getGeometryData();
+			List<String> geometryData = GsonUtil.GsonToList(gsonString2, String.class);
 			// List<String> geometryData = GsonUtil.GsonToList(gsonString2, Point.class);
 			//GeometryTo.put("GeometryGroundData", Geometry.getGeometryGroundData());
-			geometryTo.put("geometryData", gsonString2);
+			geometryTo.put("geometryData", geometryData);
 			res.add(geometryTo);
 		}
 		return res;
@@ -77,6 +78,7 @@ public class GeometryController {
 		List<Long> geometryIds = GsonUtil.GsonToList(json, Long.class);
 		Long [] setToArray = new Long[geometryIds.size()];  
         setToArray = geometryIds.toArray(setToArray) ;  
+        System.out.println("setToArray"+setToArray.length);
         if(setToArray.length == 0) {
         	return R.ok();
         }
