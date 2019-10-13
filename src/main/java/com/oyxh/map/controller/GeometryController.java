@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import com.oyxh.map.common.annotation.GeometryDeserializer;
 import com.oyxh.map.common.annotation.LayerItemDeserializer;
 import com.oyxh.map.common.annotation.Log;
+import com.oyxh.map.common.utils.CoodinateConvertor;
 import com.oyxh.map.common.utils.GsonUtil;
 import com.oyxh.map.common.utils.Point;
 import com.oyxh.map.common.utils.R;
@@ -60,11 +61,31 @@ public class GeometryController {
 			geometryTo.put("geometryDes", geometry.getGeometryDes());
 			geometryTo.put("geometryClass", geometry.getGeometryClass());
 			geometryTo.put("layerId", geometry.getLayerId());
-			geometryTo.put("isbackground", geometry.getIsBackground());
+			geometryTo.put("isBackground", geometry.getIsBackground());
 			String gsonString2 = geometry.getGeometryData();
-			List<String> geometryData = GsonUtil.GsonToList(gsonString2, String.class);
+			List<String> geometryDataFromData = GsonUtil.GsonToList(gsonString2, String.class);
 			// List<String> geometryData = GsonUtil.GsonToList(gsonString2, Point.class);
 			//GeometryTo.put("GeometryGroundData", Geometry.getGeometryGroundData());
+			// geometryTo.put("geometryData", geometryDataFromData);
+			List<String> geometryData = new ArrayList<String>();
+			if(geometry.getIsBackground().equals("WGS84")) {
+				for(String geometryString :geometryDataFromData) {
+					String resultString = "";
+					String[] points = geometryString.split(";");
+					for(String point:points) {
+						String[] cood = point.split(",");
+						double[] convecCood = CoodinateConvertor.wgs2bd(Double.parseDouble(cood[1]),Double.parseDouble(cood[0]));
+						if(point!=points[points.length - 1]) {
+							resultString += convecCood[1]+","+convecCood[0]+";";
+						}else {
+							resultString += convecCood[1]+","+convecCood[0];
+						}			
+					}	
+					geometryData.add(resultString);
+				}			
+			}else {
+				geometryData = geometryDataFromData;
+			}
 			geometryTo.put("geometryData", geometryData);
 			res.add(geometryTo);
 		}
@@ -78,7 +99,6 @@ public class GeometryController {
 		List<Long> geometryIds = GsonUtil.GsonToList(json, Long.class);
 		Long [] setToArray = new Long[geometryIds.size()];  
         setToArray = geometryIds.toArray(setToArray) ;  
-        System.out.println("setToArray"+setToArray.length);
         if(setToArray.length == 0) {
         	return R.ok();
         }
@@ -93,9 +113,7 @@ public class GeometryController {
 	@PostMapping("/removelayer/geometrys")
 	@ResponseBody()
 	R delete(@RequestParam(value="id",defaultValue="0") Long id) {
-		System.out.println("delete layer geometrys"+id.toString());
 		int r = geometryService.removelayer(id);
-		System.out.println("r:" + r);
 		if (r >= 0) {
 			return R.ok();
 		} else {
@@ -128,7 +146,6 @@ public class GeometryController {
 	@PostMapping("/addgeometrys")
 	@ResponseBody()
 	R addGeometrys(@RequestBody String json) {
-		System.out.println("test" + json);
 		GsonBuilder gsonBuilder = new GsonBuilder();
 	    gsonBuilder.registerTypeAdapter(GeometryDO.class, new GeometryDeserializer());
 	    Gson gson = gsonBuilder.create();

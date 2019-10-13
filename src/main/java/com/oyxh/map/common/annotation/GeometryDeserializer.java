@@ -44,9 +44,9 @@ public class GeometryDeserializer implements JsonDeserializer<GeometryDO> {
 		    final JsonElement jsongeometryClass = jsonObject.get("geometryClass");
 		    final String geometryClass =(jsongeometryClass==null)||(jsongeometryClass.toString().equals("null")) ? null:jsongeometryClass.getAsString();
 		    
-		    final JsonElement jsonisBackground = jsonObject.get("isbackground");
+		    final JsonElement jsonisBackground = jsonObject.get("isBackground");
 		    final String isBackground = (jsonisBackground==null)||jsonisBackground.toString().equals("null") ? null:jsonisBackground.getAsString();
-		    
+
 		    final JsonElement jsongeometryData = jsonObject.get("geometryData");
 		    final JsonArray geometryData = (jsongeometryData == null)||jsongeometryData.toString().equals("null")  ? null : jsongeometryData.getAsJsonArray();
 		     List<String> geometryDataString = new ArrayList<String>();
@@ -63,7 +63,6 @@ public class GeometryDeserializer implements JsonDeserializer<GeometryDO> {
            	 }		    	
             }
 		    final String geometryData1 = geometryDataString.toString();
-		    System.out.println(geometryData1);
 		    UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
 		    final long userId = user.getUserId();
 

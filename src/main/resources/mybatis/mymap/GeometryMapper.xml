@@ -52,7 +52,7 @@
                          when geometry_id=#{item.geometryId} then #{item.geometryName}
                      </if>
                      <if test="item.geometryName == null ">
-                         when geometry_id=#{item.geometryId} then sys_geometry.geometryName  
+                         when geometry_id=#{item.geometryId} then sys_geometry.geometry_name
                      </if>
                  </foreach>
             </trim>
@@ -63,6 +63,16 @@
                      </if>
                      <if test="item.geometryDes == null ">
                          when geometry_id=#{item.geometryId} then sys_geometry.geometry_des
+                     </if>
+                 </foreach>
+            </trim>
+            <trim prefix="is_background =case" suffix="end,">
+                 <foreach collection="list" item="item" index="index">
+                     <if test="item.isBackground !=null ">
+                         when geometry_id=#{item.geometryId} then #{item.isBackground}
+                     </if>
+                     <if test="item.isBackground == null ">
+                         when geometry_id=#{item.geometryId} then sys_geometry.is_background
                      </if>
                  </foreach>
             </trim>
