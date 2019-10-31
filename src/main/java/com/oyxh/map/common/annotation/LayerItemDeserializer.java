@@ -27,7 +27,9 @@ public class LayerItemDeserializer implements JsonDeserializer<LayerDO> {
 		 
 		    final JsonElement jsonlayerName = jsonObject.get("layerName");
 		    final String layerName = jsonlayerName.getAsString();
-		 
+		    
+		    final JsonElement jsonlayerDes = jsonObject.get("layerDes");
+		    final String layerDes = (jsonlayerDes==null)||jsonlayerDes.toString().equals("null") ? null:jsonlayerDes.getAsString();
 		    
 		/*    final JsonElement jsonlayerData = jsonObject.get("layerData");
 		   // final String layerData = "";
@@ -50,6 +52,7 @@ public class LayerItemDeserializer implements JsonDeserializer<LayerDO> {
 		    layerItem.setLayerGround(layerGround);
 		    layerItem.setLayerGroundData(layerGroundData);*/
 		    layerItem.setLayerData(layerData);
+		    layerItem.setLayerDes(layerDes);
 		    layerItem.setLayerId(layerId);
 		    layerItem.setLayerName(layerName);
 		    layerItem.setUserId(userId);
