@@ -3,7 +3,11 @@ package com.oyxh.map.service.impl;
 import java.util.List;
 import java.util.Map;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.oyxh.map.dao.GeometryDao;
@@ -29,8 +33,10 @@ public class GeometryServiceImpl implements GeometryService {
 		return 0;
 	}*/
 	@Override
+	/*@Cacheable(cacheNames = "geometrys",key = "#root.args[0].get(\"userId\")")*/
 	public List<GeometryDO> list(Map<String,Object> params) {
-		
+		System.out.println("geometrys list");
+		System.out.println(params);
 		List<GeometryDO> geometrys = geometryMapper.list(params);
 		return geometrys;
 	}
@@ -84,12 +90,4 @@ public class GeometryServiceImpl implements GeometryService {
 		return r;
 	}
 
-
-	/*
-	@Override
-	public int batchRemove(Long[] GeometryIds) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-*/
 }

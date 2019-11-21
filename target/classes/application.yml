@@ -23,7 +23,11 @@ mybatis:
     map-underscore-to-camel-case: true
   mapper-locations: mybatis/**/*Mapper.xml
   typeAliasesPackage: com.oyxh.map.**
-
+  
+logging:
+  level:
+    com.cn.commodity.dao : debug
+    
 wechat:
   miniapp:
     appid: wx15d4269d3210863d
