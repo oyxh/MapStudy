@@ -20,11 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.oyxh.map.common.utils.ShiroUtils;
 import com.oyxh.map.dao.UserDao;
 import com.oyxh.map.domain.UserDO;
+import com.oyxh.map.service.UserService;
 
 public class UserRealm extends AuthorizingRealm {
 	@Autowired
 	UserDao userMapper;
-	
+	@Autowired
+	UserService userService;
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
@@ -43,7 +45,7 @@ public class UserRealm extends AuthorizingRealm {
 		String password = new String((char[]) token.getCredentials());
 		
 		// 查询用户信息
-		UserDO user = userMapper.list(map).get(0);
+		UserDO user = userService.list(map).get(0);
 		
 		// 账号不存在
 		if (user == null) {

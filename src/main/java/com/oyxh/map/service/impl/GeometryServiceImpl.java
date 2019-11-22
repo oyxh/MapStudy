@@ -11,7 +11,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.oyxh.map.dao.GeometryDao;
+import com.oyxh.map.dao.UserDao;
 import com.oyxh.map.domain.GeometryDO;
+import com.oyxh.map.domain.UserDO;
 import com.oyxh.map.service.GeometryService;
 
 @Service
@@ -19,7 +21,8 @@ public class GeometryServiceImpl implements GeometryService {
 	
 	@Autowired
 	GeometryDao geometryMapper;
-	
+	@Autowired
+	UserDao userMapper;
 	/*@Override
 	public GeometryDO get(Long Geometry_id) {
 		// TODO Auto-generated method stub
@@ -33,11 +36,11 @@ public class GeometryServiceImpl implements GeometryService {
 		return 0;
 	}*/
 	@Override
-	/*@Cacheable(cacheNames = "geometrys",key = "#root.args[0].get(\"userId\")")*/
+    @Cacheable(cacheNames = "geometrys",key = "#params['userId']")
 	public List<GeometryDO> list(Map<String,Object> params) {
 		System.out.println("geometrys list");
 		System.out.println(params);
-		List<GeometryDO> geometrys = geometryMapper.list(params);
+	    List<GeometryDO> geometrys = geometryMapper.list(params);
 		return geometrys;
 	}
 
@@ -72,7 +75,8 @@ public class GeometryServiceImpl implements GeometryService {
 	}
 
 	@Override
-	public int batchUpdate(List<GeometryDO> Geometrys) {
+	/*@Cacheable(cacheNames = "geometrys",key = "#root.args[1]")*/
+	public int batchUpdate(List<GeometryDO> Geometrys,long userId) {
 		int r = geometryMapper.batchUpdate(Geometrys);
 		return r;
 	}

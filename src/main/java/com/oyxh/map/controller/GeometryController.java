@@ -27,12 +27,15 @@ import com.oyxh.map.domain.GeometryDO;
 import com.oyxh.map.domain.LayerDO;
 import com.oyxh.map.domain.UserDO;
 import com.oyxh.map.service.GeometryService;
+import com.oyxh.map.service.UserService;
 
 
 @Controller
 public class GeometryController {
 	@Autowired
 	  private GeometryService geometryService;
+	@Autowired
+	  private UserService userService;
 	
 	/**
 	 * 
@@ -48,6 +51,13 @@ public class GeometryController {
 		Map<String, Object> params = new HashMap<>();
 		UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
 		params.put("userId", user.getUserId());
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", user.getUserId());
+		
+		// 查询用户信息
+		List<UserDO> user1 = userService.list(map);
+		System.out.println(user1.toString());
 		List<GeometryDO> geometrys = geometryService.list(params);	
 		List<Map<String,Object>> res = new ArrayList<Map<String,Object>>();	
 		for(GeometryDO geometry : geometrys) {
@@ -131,10 +141,11 @@ public class GeometryController {
 	    Gson gson = gsonBuilder.create();
 	    GsonUtil.setGson(gson);
 		List<GeometryDO> geometrys = GsonUtil.GsonToList(json, GeometryDO.class);
+		UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
 		if(geometrys.size() == 0) {
 	        	return R.ok();
 	    }
-		if (geometryService.batchUpdate(geometrys) > 0) {
+		if (geometryService.batchUpdate(geometrys,user.getUserId()) > 0) {
 			return R.ok();
 		} else {
 			return R.error(1, "删除失败");

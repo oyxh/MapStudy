@@ -10,6 +10,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,8 +47,12 @@ public class UserServiceImp implements UserService {
 	}
 	
 	@Override
-	public List<UserDO> list(Map<String, Object> map) {
-		return userMapper.list(map);
+	@Cacheable(cacheNames = "userlist",key = "#params['userId']")
+	public List<UserDO> list(Map<String, Object> params) {
+		System.out.println("user list");
+		System.out.println(params);
+		List<UserDO> userlist = userMapper.list(params);
+		return userlist;
 	}
 
 	@Override
@@ -55,7 +60,7 @@ public class UserServiceImp implements UserService {
 		return userMapper.count(map);
 	}
 
-	@Transactional
+/*	@Transactional*/
 	@Override
 	public int save(UserDO user) {
 		int count = userMapper.save(user);
@@ -118,7 +123,7 @@ public class UserServiceImp implements UserService {
 		return r;
 	}
 
-	@Transactional
+	/*@Transactional*/
 	@Override
 	public int batchremove(Long[] userIds) {
 		int count = userMapper.batchRemove(userIds);

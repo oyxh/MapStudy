@@ -52,10 +52,10 @@ public class PrimeController extends BaseController {
 
 	
 	@Log("登录")
-	@PostMapping("/login")
+	@PostMapping("/registe")
 	@ResponseBody
 	R ajaxLogin(String username, String password) {
-		
+		System.out.println("registe");
 		password = MD5Utils.encrypt(username, password);
 		
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -70,8 +70,27 @@ public class PrimeController extends BaseController {
 		}
 	}
 	
-
-	
+	@Log("注册")
+	@PostMapping("/login")
+	@ResponseBody
+	R ajaxRegister(String username, String password) {
+	password = MD5Utils.encrypt(username, password);
+		
+		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+		
+		Subject subject = SecurityUtils.getSubject();
+		try {
+			subject.login(token);
+			
+			return R.ok();
+		} catch (AuthenticationException e) {
+			return R.error("用户或密码错误");
+		}
+		/*System.out.println(username+" "+ password);
+		return R.ok();*/
+	}
+		
+		
 	@Log("请求访问主页")
 	@GetMapping({"/index"})
 	public String  getIndex(Model model) {
