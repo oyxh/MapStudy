@@ -69,12 +69,13 @@ public class ShiroConfig {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
 		
-		
+		// shiroFilterFactoryBean.setSuccessUrl("/register");
 		shiroFilterFactoryBean.setLoginUrl("/login");
 		shiroFilterFactoryBean.setSuccessUrl("/index");
-		shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+		shiroFilterFactoryBean.setUnauthorizedUrl("/403"); // 设置无权限时跳转的 url;
 		LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 		//配置权限要以/开始
+		filterChainDefinitionMap.put("/register", "anon");
 		filterChainDefinitionMap.put("/static/**", "anon");
 		filterChainDefinitionMap.put("/assets/css/**", "anon");
 		filterChainDefinitionMap.put("/assets/js/**", "anon");

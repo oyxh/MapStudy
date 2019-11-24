@@ -34,8 +34,6 @@ import com.oyxh.map.service.UserService;
 public class GeometryController {
 	@Autowired
 	  private GeometryService geometryService;
-	@Autowired
-	  private UserService userService;
 	
 	/**
 	 * 
@@ -51,13 +49,6 @@ public class GeometryController {
 		Map<String, Object> params = new HashMap<>();
 		UserDO user = (UserDO) SecurityUtils.getSubject().getPrincipal();
 		params.put("userId", user.getUserId());
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("userId", user.getUserId());
-		
-		// 查询用户信息
-		List<UserDO> user1 = userService.list(map);
-		System.out.println(user1.toString());
 		List<GeometryDO> geometrys = geometryService.list(params);	
 		List<Map<String,Object>> res = new ArrayList<Map<String,Object>>();	
 		for(GeometryDO geometry : geometrys) {

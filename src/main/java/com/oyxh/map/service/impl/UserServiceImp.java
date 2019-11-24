@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import com.oyxh.map.service.UserService;
 
 
 @Transactional
+@Lazy
 @Service
 public class UserServiceImp implements UserService {
 	@Autowired
@@ -47,7 +49,7 @@ public class UserServiceImp implements UserService {
 	}
 	
 	@Override
-	@Cacheable(cacheNames = "userlist",key = "#params['userId']")
+	@Cacheable(cacheNames = "userlist",key = "#params['username']")
 	public List<UserDO> list(Map<String, Object> params) {
 		System.out.println("user list");
 		System.out.println(params);
@@ -60,23 +62,11 @@ public class UserServiceImp implements UserService {
 		return userMapper.count(map);
 	}
 
-/*	@Transactional*/
+    @Transactional
 	@Override
 	public int save(UserDO user) {
 		int count = userMapper.save(user);
-		Long userId = user.getUserId();
-		List<Long> roles = user.getroleIds();
-		userRoleMapper.removeByUserId(userId);
-		List<UserRoleDO> list = new ArrayList<>();
-		for (Long roleId : roles) {
-			UserRoleDO ur = new UserRoleDO();
-			ur.setUserId(userId);
-			ur.setRoleId(roleId);
-			list.add(ur);
-		}
-		if (list.size() > 0) {
-			userRoleMapper.batchSave(list);
-		}
+		Long userId = user.getUserId();	
 		return count;
 	}
 

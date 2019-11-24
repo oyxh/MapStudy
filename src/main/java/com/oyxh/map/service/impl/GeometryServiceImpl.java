@@ -36,7 +36,7 @@ public class GeometryServiceImpl implements GeometryService {
 		return 0;
 	}*/
 	@Override
-    @Cacheable(cacheNames = "geometrys",key = "#params['userId']")
+    // @Cacheable(cacheNames = "geometrys",key = "#params['userId']")
 	public List<GeometryDO> list(Map<String,Object> params) {
 		System.out.println("geometrys list");
 		System.out.println(params);

@@ -16,6 +16,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import com.oyxh.map.common.utils.ShiroUtils;
 import com.oyxh.map.dao.UserDao;
@@ -43,7 +44,8 @@ public class UserRealm extends AuthorizingRealm {
 		Map<String, Object> map = new HashMap<>();
 		map.put("username", username);
 		String password = new String((char[]) token.getCredentials());
-		
+		System.out.println(username);
+		System.out.println(password);
 		// 查询用户信息
 		UserDO user = userService.list(map).get(0);
 		
