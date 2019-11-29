@@ -10,6 +10,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -51,8 +52,6 @@ public class UserServiceImp implements UserService {
 	@Override
 	@Cacheable(cacheNames = "userlist",key = "#params['username']")
 	public List<UserDO> list(Map<String, Object> params) {
-		System.out.println("user list");
-		System.out.println(params);
 		List<UserDO> userlist = userMapper.list(params);
 		return userlist;
 	}
@@ -71,21 +70,10 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
+	@CacheEvict(cacheNames="userlist",key="#user.getUsername()")
 	public int update(UserDO user) {
 		int r = userMapper.update(user);
-		Long userId = user.getUserId();
-		List<Long> roles = user.getroleIds();
-		userRoleMapper.removeByUserId(userId);
-		List<UserRoleDO> list = new ArrayList<>();
-		for (Long roleId : roles) {
-			UserRoleDO ur = new UserRoleDO();
-			ur.setUserId(userId);
-			ur.setRoleId(roleId);
-			list.add(ur);
-		}
-		if (list.size() > 0) {
-			userRoleMapper.batchSave(list);
-		}
+		System.out.println("更新返回" + r);
 		return r;
 	}
 

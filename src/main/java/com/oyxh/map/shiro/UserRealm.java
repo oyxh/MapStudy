@@ -27,6 +27,7 @@ public class UserRealm extends AuthorizingRealm {
 	@Autowired
 	UserDao userMapper;
 	@Autowired
+	@Lazy
 	UserService userService;
 
 	@Override
